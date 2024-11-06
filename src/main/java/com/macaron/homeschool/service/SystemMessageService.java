@@ -1,7 +1,7 @@
 package com.macaron.homeschool.service;
 
-import com.macaron.homeschool.model.entity.SystemMessage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.macaron.homeschool.model.entity.SystemMessage;
 
 /**
 * @author 马拉圈

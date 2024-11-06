@@ -6,12 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 @Configuration
 @Slf4j
@@ -32,7 +27,7 @@ public class OpenApiConfig implements WebMvcConfigurer {
                 .title(name)
                 .version(version)
         );
-        log.info("{} {} 接口文档路径： {}/swagger-ui/index.html", name, version, domain);
+        log.info("{} {} 接口文档路径： \nindex: {}/swagger-ui/index.html\njson: {}/v3/api-docs", name, version, domain, domain);
         return info;
     }
 

@@ -1,11 +1,11 @@
 package com.macaron.homeschool.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-
 import com.macaron.homeschool.common.base.BaseIncrIDEntity;
 import com.macaron.homeschool.common.enums.AuditStatus;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @TableName school_class

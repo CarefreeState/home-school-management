@@ -5,7 +5,6 @@ import com.macaron.homeschool.common.annotation.Intercept;
 import com.macaron.homeschool.common.annotation.handler.InterceptHelper;
 import com.macaron.homeschool.common.context.BaseContext;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
-import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.common.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;

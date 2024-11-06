@@ -1,9 +1,9 @@
 package com.macaron.homeschool.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.macaron.homeschool.model.dao.mapper.ClassMessageMapper;
 import com.macaron.homeschool.model.entity.ClassMessage;
 import com.macaron.homeschool.service.ClassMessageService;
-import com.macaron.homeschool.model.dao.mapper.ClassMessageMapper;
 import org.springframework.stereotype.Service;
 
 /**

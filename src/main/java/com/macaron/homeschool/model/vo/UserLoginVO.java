@@ -1,7 +1,8 @@
 package com.macaron.homeschool.model.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Created With Intellij IDEA
@@ -13,10 +14,8 @@ import lombok.*;
 @Getter
 @ToString
 @Builder
-@Schema(description = "用户登录响应数据")
 public class UserLoginVO {
 
-    @Schema(description = "用户登录令牌")
     private String token;
 
 }

@@ -1,7 +1,7 @@
 package com.macaron.homeschool.model.dao.mapper;
 
-import com.macaron.homeschool.model.entity.SiteMessage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.macaron.homeschool.model.entity.SiteMessage;
 
 /**
 * @author 马拉圈
