@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.macaron.homeschool.model.entity.SiteMessage">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="classId" column="class_id" jdbcType="BIGINT"/>
             <result property="senderId" column="sender_id" jdbcType="BIGINT"/>
             <result property="recipientId" column="recipient_id" jdbcType="BIGINT"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
@@ -17,7 +18,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,sender_id,recipient_id,
+        id,class_id,sender_id,recipient_id,
         title,content,version,
         is_deleted,create_time,update_time
     </sql>

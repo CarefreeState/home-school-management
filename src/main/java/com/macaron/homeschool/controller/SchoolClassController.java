@@ -120,7 +120,7 @@ public class SchoolClassController {
         Long userId = BaseContext.getCurrentUser().getUserId();
         // 判断是不是审核通过的班级内的用户
         schoolClassService.checkPartnerOfSchoolClass(classId, userId);
-        List<SchoolClassUserVO> schoolClassUserVOList = schoolClassService.querySchoolClassUserList(classId, userId);
+        List<SchoolClassUserVO> schoolClassUserVOList = schoolClassService.querySchoolClassUserList(classId);
         return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassUserVOList);
     }
 

@@ -34,9 +34,9 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
 
     private final RedisLock redisLock;
 
-    private final ClassUserLinkService classUserLinkService;
-
     private final SchoolClassMapper schoolClassMapper;
+
+    private final ClassUserLinkService classUserLinkService;
 
     @Override
     public Optional<SchoolClass> getSchoolClass(Long classId) {
@@ -134,13 +134,20 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
     }
 
     @Override
-    public List<SchoolClassUserVO> querySchoolClassUserList(Long classId, Long userId) {
+    public List<SchoolClassUserVO> querySchoolClassUserList(Long classId) {
         return schoolClassMapper.querySchoolClassUserList(classId);
     }
 
     @Override
     public void auditClassUser(Long classId, Long userId, AuditStatus auditStatus) {
         classUserLinkService.auditClassUser(classId, userId, auditStatus);
+    }
+
+    @Override
+    public void checkSchoolClassApproved(Long classId) {
+        if(!AuditStatus.AUDIT_PASSED.equals(checkAndGetSchoolClass(classId).getAuditStatus())) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.AUDIT_STATUS_NOT_APPROVED);
+        }
     }
 
     @Override

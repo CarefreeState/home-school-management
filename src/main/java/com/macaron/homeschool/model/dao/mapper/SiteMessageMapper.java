@@ -1,7 +1,11 @@
 package com.macaron.homeschool.model.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.macaron.homeschool.model.entity.SiteMessage;
+import com.macaron.homeschool.model.entity.SystemMessage;
+import com.macaron.homeschool.model.vo.SiteMessageVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author 马拉圈
@@ -11,6 +15,7 @@ import com.macaron.homeschool.model.entity.SiteMessage;
 */
 public interface SiteMessageMapper extends BaseMapper<SiteMessage> {
 
+    IPage<SiteMessageVO> querySiteMessageList(IPage<SiteMessageVO> page, @Param("userId") Long userId, @Param("classId") Long classId, @Param("oppositeId") Long oppositeId);
 }
 
 

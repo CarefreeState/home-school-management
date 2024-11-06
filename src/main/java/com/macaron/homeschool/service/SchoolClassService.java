@@ -34,9 +34,12 @@ public interface SchoolClassService extends IService<SchoolClass> {
 
     void attendSchoolClass(Long classId, Long userId);
 
-    List<SchoolClassUserVO> querySchoolClassUserList(Long classId, Long userId);
+    List<SchoolClassUserVO> querySchoolClassUserList(Long classId);
 
     void auditClassUser(Long classId, Long userId, AuditStatus auditStatus);
+
+    // 未审核/未通过则报错
+    void checkSchoolClassApproved(Long classId);
 
     void checkCreatorOfSchoolClass(Long classId, Long userId);
 

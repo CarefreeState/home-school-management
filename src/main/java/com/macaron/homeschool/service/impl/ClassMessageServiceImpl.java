@@ -16,6 +16,7 @@ import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.ClassMessageDetailVO;
 import com.macaron.homeschool.model.vo.ClassMessageQueryVO;
 import com.macaron.homeschool.service.ClassMessageService;
+import com.macaron.homeschool.service.SchoolClassService;
 import com.macaron.homeschool.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,8 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
 
     private final UserService userService;
 
+    private final SchoolClassService schoolClassService;
+
     @Override
     public Optional<ClassMessage> getClassMessage(Long messageId) {
         return this.lambdaQuery()
@@ -46,10 +49,13 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
 
     @Override
     public Long releaseClassMessage(Long teacherId, ClassMessageDTO classMessageDTO) {
+        // 判断老师是不是班级里的人
+        Long classId = classMessageDTO.getClassId();
+        schoolClassService.checkPartnerOfSchoolClass(classId, teacherId);
         ClassMessage classMessage = ClassMessageConverter.INSTANCE.classMessageDTOToClassMessage(classMessageDTO);
         classMessage.setCreatorId(teacherId);
         this.save(classMessage);
-        log.info("老师 {} 发布系统消息 {}", teacherId, classMessage);
+        log.info("老师 {} 发布班级消息 {}", teacherId, classMessage);
         return classMessage.getId();
     }
 

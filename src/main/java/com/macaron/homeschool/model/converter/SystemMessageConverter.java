@@ -27,8 +27,6 @@ public interface SystemMessageConverter {
 
     SystemMessage systemMessageDTOToSystemMessage(SystemMessageDTO systemMessage);
 
-    List<SystemMessageVO> systemMessageListToSystemMessageVOList(List<SystemMessage> systemMessageList);
-
     SystemMessageDetailVO systemMessageToSystemMessageDetailVO(SystemMessage systemMessage);
 
     BasePageQuery systemMessageQueryDTOToBasePageQuery(SystemMessageQueryDTO systemMessageQueryDTO);
