@@ -3,7 +3,9 @@ package com.macaron.homeschool.controller;
 import com.macaron.homeschool.common.SystemJsonResponse;
 import com.macaron.homeschool.common.annotation.Intercept;
 import com.macaron.homeschool.common.context.BaseContext;
+import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.enums.UserType;
+import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.dto.SystemMessageDTO;
 import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
@@ -40,13 +42,17 @@ public class SystemMessageController {
     @Operation(summary = "发布系统消息")
     public SystemJsonResponse<Long> releaseSystemMessage(@Valid @RequestBody SystemMessageDTO systemMessageDTO) {
         Long managerId = BaseContext.getCurrentUser().getUserId();
-        Long id = systemMessageService.releaseSystemMessage(managerId, systemMessageDTO);
-        return SystemJsonResponse.SYSTEM_SUCCESS(id);
+        Long messageId = systemMessageService.releaseSystemMessage(managerId, systemMessageDTO);
+        return SystemJsonResponse.SYSTEM_SUCCESS(messageId);
     }
 
     @DeleteMapping("/remove/{messageId}")
     @Operation(summary = "删除系统消息")
     public SystemJsonResponse<?> removeSystemMessage(@PathVariable("messageId") @NotNull(message = "系统消息 id 不能为空") Long messageId) {
+        Long creatorId = systemMessageService.checkAndGetSystemMessage(messageId).getCreatorId();
+        if(!BaseContext.getCurrentUser().getUserId().equals(creatorId)) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+        }
         systemMessageService.removeSystemMessage(messageId);
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
@@ -59,11 +65,11 @@ public class SystemMessageController {
         return SystemJsonResponse.SYSTEM_SUCCESS(systemMessageQueryVO);
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/detail/{messageId}")
     @Operation(summary = "查看系统消息详情")
     @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
-    public SystemJsonResponse<SystemMessageDetailVO> querySystemMessageDetail(@PathVariable("id") @NotNull(message = "系统消息 id 不能为空") Long id) {
-        SystemMessageDetailVO systemMessageDetailVO = systemMessageService.querySystemMessageDetail(id);
+    public SystemJsonResponse<SystemMessageDetailVO> querySystemMessageDetail(@PathVariable("messageId") @NotNull(message = "系统消息 id 不能为空") Long messageId) {
+        SystemMessageDetailVO systemMessageDetailVO = systemMessageService.querySystemMessageDetail(messageId);
         return SystemJsonResponse.SYSTEM_SUCCESS(systemMessageDetailVO);
     }
 

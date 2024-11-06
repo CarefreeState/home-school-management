@@ -3,7 +3,6 @@ package com.macaron.homeschool.model.dao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.macaron.homeschool.model.entity.SiteMessage;
-import com.macaron.homeschool.model.entity.SystemMessage;
 import com.macaron.homeschool.model.vo.SiteMessageVO;
 import org.apache.ibatis.annotations.Param;
 

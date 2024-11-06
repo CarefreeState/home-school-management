@@ -160,12 +160,11 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
 
     @Override
     public void checkPartnerOfSchoolClass(Long classId, Long userId) {
-        checkCreatorOfSchoolClass(classId, userId);
         Boolean isPartner = classUserLinkService.getClassUserLink(classId, userId)
                 .map(cu -> AuditStatus.AUDIT_PASSED.equals(cu.getAuditStatus()))
                 .orElse(Boolean.FALSE);
         if(Boolean.FALSE.equals(isPartner)) {
-            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+            checkCreatorOfSchoolClass(classId, userId);
         }
     }
 }

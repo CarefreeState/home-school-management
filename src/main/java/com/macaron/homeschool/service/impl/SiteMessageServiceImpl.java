@@ -46,10 +46,6 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
 
     @Override
     public Long releaseSiteMessage(Long userId, SiteMessageDTO siteMessageDTO) {
-        // 检查双方是否是班级内的人
-        Long classId = siteMessageDTO.getClassId();
-        schoolClassService.checkPartnerOfSchoolClass(classId, userId);
-        schoolClassService.checkPartnerOfSchoolClass(classId, siteMessageDTO.getRecipientId());
         SiteMessage siteMessage = SiteMessageConverter.INSTANCE.siteMessageDTOToSiteMessage(siteMessageDTO);
         siteMessage.setSenderId(userId);
         this.save(siteMessage);
@@ -79,6 +75,7 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
         }
         // 如果 classId 不为 null，userId 必须是该班级的
         if(Objects.nonNull(classId)) {
+            schoolClassService.checkSchoolClassApproved(classId);
             schoolClassService.checkPartnerOfSchoolClass(classId, userId);
         }
         // 分页
@@ -90,7 +87,7 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
     }
 
     @Override
-    public SiteMessage checkAndGetSystemMessage(Long messageId) {
+    public SiteMessage checkAndGetSiteMessage(Long messageId) {
         return getSiteMessage(messageId).orElseThrow(() ->
                 new GlobalServiceException(GlobalServiceStatusCode.SITE_MESSAGE_NOT_EXISTS));
     }

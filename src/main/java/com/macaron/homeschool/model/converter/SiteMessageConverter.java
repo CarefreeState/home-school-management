@@ -2,15 +2,11 @@ package com.macaron.homeschool.model.converter;
 
 import com.macaron.homeschool.common.base.BasePageQuery;
 import com.macaron.homeschool.common.base.BasePageResult;
-import com.macaron.homeschool.model.dao.mapper.SiteMessageMapper;
 import com.macaron.homeschool.model.dto.SiteMessageDTO;
 import com.macaron.homeschool.model.dto.SiteMessageQueryDTO;
-import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
 import com.macaron.homeschool.model.entity.SiteMessage;
-import com.macaron.homeschool.model.entity.SystemMessage;
 import com.macaron.homeschool.model.vo.SiteMessageQueryVO;
 import com.macaron.homeschool.model.vo.SiteMessageVO;
-import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -27,7 +27,7 @@ import java.util.Optional;
 
 /**
 * @author 马拉圈
-* @description 针对表【class_message(班级消息表)】的数据库操作Service实现
+* @description 针对表【class_message(班级通知表)】的数据库操作Service实现
 * @createDate 2024-11-05 21:06:05
 */
 @Service
@@ -49,13 +49,10 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
 
     @Override
     public Long releaseClassMessage(Long teacherId, ClassMessageDTO classMessageDTO) {
-        // 判断老师是不是班级里的人
-        Long classId = classMessageDTO.getClassId();
-        schoolClassService.checkPartnerOfSchoolClass(classId, teacherId);
         ClassMessage classMessage = ClassMessageConverter.INSTANCE.classMessageDTOToClassMessage(classMessageDTO);
         classMessage.setCreatorId(teacherId);
         this.save(classMessage);
-        log.info("老师 {} 发布班级消息 {}", teacherId, classMessage);
+        log.info("老师 {} 发布班级通知 {}", teacherId, classMessage);
         return classMessage.getId();
     }
 
@@ -67,7 +64,7 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
     }
 
     @Override
-    public ClassMessageQueryVO queryClassMessageList(ClassMessageQueryDTO classMessageQueryDTO) {
+    public ClassMessageQueryVO queryClassMessageList(Long userId, ClassMessageQueryDTO classMessageQueryDTO) {
         // 解析分页参数获取 page
         IPage<ClassMessage> page = null;
         Long classId = null;
@@ -76,6 +73,11 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
         } else {
             page = ClassMessageConverter.INSTANCE.classMessageQueryDTOToBasePageQuery(classMessageQueryDTO).toMpPage();
             classId = classMessageQueryDTO.getClassId();
+        }
+        // 如果 classId 不为 null，userId 必须是该班级的
+        if(Objects.nonNull(classId)) {
+            schoolClassService.checkSchoolClassApproved(classId);
+            schoolClassService.checkPartnerOfSchoolClass(classId, userId);
         }
         // 分页
         IPage<ClassMessage> classMessageIPage = this.lambdaQuery()

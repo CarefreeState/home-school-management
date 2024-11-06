@@ -7,11 +7,8 @@ import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
 import com.macaron.homeschool.model.entity.SystemMessage;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
 import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
-import com.macaron.homeschool.model.vo.SystemMessageVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 /**
  * Created With Intellij IDEA

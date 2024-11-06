@@ -11,7 +11,7 @@ import java.util.Optional;
 
 /**
 * @author 马拉圈
-* @description 针对表【class_message(班级消息表)】的数据库操作Service
+* @description 针对表【class_message(班级通知表)】的数据库操作Service
 * @createDate 2024-11-05 21:06:05
 */
 public interface ClassMessageService extends IService<ClassMessage> {
@@ -23,7 +23,7 @@ public interface ClassMessageService extends IService<ClassMessage> {
     void removeClassMessage(Long messageId);
 
     // 条件分页查询
-    ClassMessageQueryVO queryClassMessageList(ClassMessageQueryDTO classMessageQueryDTO);
+    ClassMessageQueryVO queryClassMessageList(Long userId, ClassMessageQueryDTO classMessageQueryDTO);
 
     ClassMessage checkAndGetClassMessage(Long messageId);
 
