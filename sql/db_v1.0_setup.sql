@@ -21,6 +21,10 @@ create table `user`(
     unique index `uni_username`(`username` asc) using btree
 ) auto_increment = 10000 comment = '用户基本信息表';
 
+insert into user(`username`, `nickname`, `password`, `user_type`, `audit_status`)
+    values('root', 'root', '8f687f9a47e14aaf92f5d861355d3cce$8960081935ccd38123476bb232573024', 1, 1);
+
+
 drop table if exists `school_class`;
 create table `school_class` (
     `id` bigint primary key auto_increment comment 'id',
@@ -36,8 +40,8 @@ create table `school_class` (
     index `idx_creator_id`(`creator_id` asc) using btree
 ) comment '班级表';
 
-drop table if exists `class_teacher_link`;
-create table `class_teacher_link` (
+drop table if exists `class_user_link`;
+create table `class_user_link` (
     `id` bigint primary key auto_increment comment 'id',
     `class_id` bigint not null comment '班级 id',
     `user_id` bigint not null comment '老师 id',
@@ -67,9 +71,11 @@ create table `system_message` (
     index `idx_creator_id`(`creator_id` asc) using btree
 ) comment '系统消息表';
 
+
 drop table if exists `class_message`;
 create table `class_message` (
     `id` bigint primary key auto_increment comment 'id',
+    `creator_id` bigint not null comment '创建者 id',
     `class_id` bigint not null comment '班级 id',
     `title` varchar(256) not null comment '标题',
     `content` text not null comment '内容',
@@ -79,12 +85,14 @@ create table `class_message` (
     `create_time` datetime not null default current_timestamp comment '创建时间',
     `update_time` datetime not null default current_timestamp on update current_timestamp comment '更新时间',
     -- index
+    index `idx_creator_id`(`creator_id` asc) using btree,
     index `idx_class_id`(`class_id` asc) using btree
-) comment '班级消息表';
+) comment '班级通知表';
 
 drop table if exists `site_message`;
 create table `site_message` (
     `id` bigint primary key auto_increment comment 'id',
+    `class_id` bigint not null comment '班级 id',
     `sender_id` bigint not null comment '发送者 id',
     `recipient_id` bigint not null comment '接受者 id',
     `title` varchar(256) not null comment '标题',
@@ -95,6 +103,7 @@ create table `site_message` (
     `create_time` datetime not null default current_timestamp comment '创建时间',
     `update_time` datetime not null default current_timestamp on update current_timestamp comment '更新时间',
     -- index
+    index `idx_class_id`(`class_id` asc) using btree,
     index `idx_sender_id`(`sender_id` asc) using btree,
     index `idx_recipient_id`(`recipient_id` asc) using btree
 ) comment '站内信表';

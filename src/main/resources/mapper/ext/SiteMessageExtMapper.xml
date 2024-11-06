@@ -6,11 +6,11 @@
 
     <resultMap id="SiteMessageDetailMap" type="com.macaron.homeschool.model.vo.SiteMessageVO">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <association property="senderVO" columnPrefix="s_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.BaseResultMap"/>
-        <association property="recipientVO" columnPrefix="r_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.BaseResultMap"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <association property="senderVO" columnPrefix="s_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.BaseResultMap"/>
+        <association property="recipientVO" columnPrefix="r_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.BaseResultMap"/>
     </resultMap>
 
     <select id="querySiteMessageList" resultMap="SiteMessageDetailMap">

@@ -57,7 +57,7 @@ public class SiteMessageController {
 
     @DeleteMapping("/remove/{messageId}")
     @Operation(summary = "删除站内信")
-    public SystemJsonResponse<?> removeSiteMessage(@PathVariable("messageId") @NotNull(message = "班级通知 id 不能为空") Long messageId) {
+    public SystemJsonResponse<?> removeSiteMessage(@PathVariable("messageId") @NotNull(message = "站内信 id 不能为空") Long messageId) {
         Long senderId = siteMessageService.checkAndGetSiteMessage(messageId).getSenderId();
         if(!BaseContext.getCurrentUser().getUserId().equals(senderId)) {
             throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
