@@ -1,5 +1,6 @@
 package com.macaron.homeschool.model.dto;
 
+import com.macaron.homeschool.common.enums.AuditStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -8,15 +9,12 @@ import lombok.Data;
  * Description:
  * User: 马拉圈
  * Date: 2024-11-06
- * Time: 15:37
+ * Time: 16:23
  */
 @Data
-public class SystemMessageDTO {
+public class SchoolClassDTO {
 
-    @NotBlank(message = "标题不能为空")
-    private String title;
-
-    @NotBlank(message = "内容不能为空")
-    private String content;
+    @NotBlank(message = "班级名称不能为 null")
+    private String className;
 
 }

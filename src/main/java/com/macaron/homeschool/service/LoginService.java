@@ -21,9 +21,9 @@ public interface LoginService {
     UserLoginVO login(UserLoginDTO userLoginDTO);
 
     default void checkCanLogin(User dbUser) {
-        // 判断是否可以登录
+        // 判断是否通过了审核
         if(!dbUser.getAuditStatus().equals(AuditStatus.AUDIT_PASSED)) {
-            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+            throw new GlobalServiceException(GlobalServiceStatusCode.AUDIT_STATUS_NOT_APPROVED);
         }
     }
 

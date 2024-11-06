@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.macaron.homeschool.model.dao.mapper.ClassTeacherLinkMapper">
+<mapper namespace="com.macaron.homeschool.model.dao.mapper.ClassUserLinkMapper">
 
-    <resultMap id="BaseResultMap" type="com.macaron.homeschool.model.entity.ClassTeacherLink">
+    <resultMap id="BaseResultMap" type="com.macaron.homeschool.model.entity.ClassUserLink">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="classId" column="class_id" jdbcType="BIGINT"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>

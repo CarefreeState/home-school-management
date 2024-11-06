@@ -2,6 +2,10 @@ package com.macaron.homeschool.model.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macaron.homeschool.model.entity.SchoolClass;
+import com.macaron.homeschool.model.vo.SchoolClassUserVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author 马拉圈
@@ -11,6 +15,7 @@ import com.macaron.homeschool.model.entity.SchoolClass;
 */
 public interface SchoolClassMapper extends BaseMapper<SchoolClass> {
 
+    List<SchoolClassUserVO> querySchoolClassUserList(@Param("classId") Long classId);
 }
 
 

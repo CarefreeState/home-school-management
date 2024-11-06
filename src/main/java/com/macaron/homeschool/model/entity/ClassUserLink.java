@@ -8,11 +8,11 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @TableName class_teacher_link
+ * @TableName class_user_link
  */
-@TableName(value ="class_teacher_link")
+@TableName(value ="class_user_link")
 @Data
-public class ClassTeacherLink extends BaseIncrIDEntity implements Serializable {
+public class ClassUserLink extends BaseIncrIDEntity implements Serializable {
 
     private Long classId;
 
