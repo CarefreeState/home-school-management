@@ -1,0 +1,18 @@
+.article h3 {
+  font-size: 22px;
+  text-align: center;
+  font-weight: 900;
+  padding: 10px 0;
+}
+.article .date {
+  text-align: center;
+  color: rgb(12, 54, 114);
+  font-weight: 450;
+  padding: 20px;
+}
+/* .article .content p {
+  text-indent: 2em;
+  margin-bottom: 10px;
+} */
+/* 如果内容太多，浏览器会出现滚动条，从而背景给滚没了 */
+/* 把滚动条放入左侧板心即可*/

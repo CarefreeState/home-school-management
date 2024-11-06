@@ -1,0 +1,90 @@
+.blog .thing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.blog img {
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+}
+.blog .title {
+  font-weight: 900;
+  font-size: 18px;
+  text-align: center;
+  margin-left: 5px;
+}
+
+.blog .date {
+  text-align: center;
+  color: rgb(12, 54, 114);
+  font-weight: 450;
+  padding: 20px;
+}
+
+.blog .content {
+  text-indent: 2em;
+  word-wrap: break-word;
+  color: rgba(0, 0, 0, 0.618);
+  /* 自动匹配的单位em！ em就是一个汉字的大小 */
+}
+.blog a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  width: 120px;
+  height: 40px;
+  font-weight: 900;
+  border: black 2px solid;
+  line-height: 40px;
+  /*当行高对于height的时候，恰好文本水平居中*/
+  margin: 20px auto;
+  transition: all 0.618s;
+  /* 对所有的变化都缓慢持续2s
+    1. 悬停于按钮
+    2. 离开按钮 */
+}
+#del {
+  display: block;
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  width: 120px;
+  height: 40px;
+  font-weight: 900;
+  border: black 2px solid;
+  line-height: 40px;
+  /*当行高对于height的时候，恰好文本水平居中*/
+  margin: 20px auto;
+  transition: all 0.618s;
+  /* 对所有的变化都缓慢持续2s
+    1. 悬停于按钮
+    2. 离开按钮 */
+}
+/* 伪类选择器 ，选中的是元素的状态，
+hover就是获取鼠标悬停的状态*/
+.blog a:hover {
+  /*选中后的改变的属性*/
+  background-color: rgb(147, 210, 253);
+  color: rgb(76, 66, 136);
+}
+#del:hover {
+  /*选中后的改变的属性*/
+  background-color: rgb(147, 210, 253);
+  color: rgb(76, 66, 136);
+  cursor: pointer;
+}
+.blog {
+  padding: 10px;
+  margin: 20px;
+  border-radius: 10px;
+  height: auto;
+  transition: all 0.618s;
+}
+
+.blog:hover {
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}

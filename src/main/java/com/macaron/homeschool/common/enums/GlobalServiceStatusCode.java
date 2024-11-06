@@ -48,6 +48,7 @@ public enum GlobalServiceStatusCode {
 
     USER_NO_PERMISSION(2403, "用户无权限"),
     USER_CAPTCHA_CODE_ERROR(2500, "验证码错误"),
+    USER_USERNAME_PASSWORD_ERROR(2501, "用户名或密码错误"),
 
     /* 审核状态 3001-4000 */
     AUDIT_STATUS_EXCEPTION(3001, "审核状态异常"),

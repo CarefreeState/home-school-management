@@ -63,6 +63,9 @@ public class UserInterceptor implements HandlerInterceptor {
     // 因为请求还没结束，这个方法的处理时间也在请求时间内，会影响响应速度
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        if (!(handler instanceof HandlerMethod)) {
+            return;
+        }
         try {
         } finally {
             log.info("删除本地线程变量");

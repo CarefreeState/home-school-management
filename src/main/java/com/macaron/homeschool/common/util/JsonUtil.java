@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 public class JsonUtil {
 
-    private final static ObjectMapper OBJECT_MAPPER;
+    public final static ObjectMapper OBJECT_MAPPER;
 
     static {
         // 忽略未定义的属性
