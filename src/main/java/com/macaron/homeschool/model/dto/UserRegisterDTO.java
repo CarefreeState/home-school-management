@@ -25,9 +25,6 @@ public class UserRegisterDTO {
     @NotBlank(message = "密码不能空")
     private String password;
 
-    @NotBlank(message = "手机号不能空")
-    private String phoneNumber;
-
     @NotNull(message = "用户类型不能为空")
     @UserTypeIn(role = {UserType.TEACHER, UserType.GUARDIAN})
     private Integer userType;

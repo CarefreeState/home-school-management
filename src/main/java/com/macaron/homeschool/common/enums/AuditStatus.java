@@ -17,16 +17,16 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AuditStatus {
 
-    NOT_AUDITED("未审核", 0),
-    AUDIT_PASSED("审核通过", 1),
-    AUDIT_FAILED("审核不通过", 2),
+    NOT_AUDITED(0, "未审核"),
+    AUDIT_PASSED(1, "审核通过"),
+    AUDIT_FAILED(2, "审核不通过"),
     ;
-
-    private final String description;
 
     @JsonValue
     @EnumValue
     private final Integer code;
+
+    private final String description;
 
     public static AuditStatus get(Integer role) {
         for (AuditStatus auditStatus : AuditStatus.values()) {

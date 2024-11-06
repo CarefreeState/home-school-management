@@ -1,5 +1,6 @@
 package com.macaron.homeschool.service.impl;
 
+import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.common.jwt.JwtUtil;
@@ -40,6 +41,8 @@ public class PasswordLoginService implements LoginService {
         // 获取数据库的用户数据
         User dbUser = userService.getUserByUsername(passwordParams.getUsername()).orElseThrow(() ->
                 new GlobalServiceException(GlobalServiceStatusCode.USER_ACCOUNT_NOT_EXIST));
+        // 判断是否可以登录
+        checkCanLogin(dbUser);
         // 校验
         if(PasswordUtil.confirm(passwordParams.getPassword(), dbUser.getPassword())) {
             // 封装结果

@@ -1,8 +1,6 @@
 package com.macaron.homeschool.model.vo;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Created With Intellij IDEA
@@ -12,8 +10,10 @@ import lombok.ToString;
  * Time: 11:22
  */
 @Getter
-@ToString
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserLoginVO {
 
     private String token;

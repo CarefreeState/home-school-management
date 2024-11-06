@@ -1,14 +1,14 @@
 package com.macaron.homeschool.interceptor;
 
 import com.macaron.homeschool.common.enums.UserType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 
 @Getter
-@ToString
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserHelper {
 
     Long userId;

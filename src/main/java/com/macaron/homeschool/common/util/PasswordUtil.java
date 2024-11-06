@@ -14,8 +14,12 @@ public class PasswordUtil {
 
     private final static String PASSWORD_SEPARATOR = "$";
 
-    public static String assemble(String salt, String password) {
+    private static String assemble(String salt, String password) {
         return salt + PASSWORD_SEPARATOR + EncryptUtil.encrypt(salt, password);
+    }
+
+    public static String encrypt(String password) {
+        return assemble(EncryptUtil.getSalt(), password);
     }
 
     public static boolean confirm(String inputPassword, String dbPassword) {

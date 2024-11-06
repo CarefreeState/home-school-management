@@ -2,6 +2,7 @@ package com.macaron.homeschool.common.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,16 +18,16 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UserType {
 
-    MANAGER("manager", 1),
-    TEACHER("teacher", 2),
-    GUARDIAN("guardian", 3),
+    MANAGER(1, "manager"),
+    TEACHER(2, "teacher"),
+    GUARDIAN(3, "guardian"),
     ;
 
-    private final String name;
-
-    @JsonValue
+    @JsonValue // OpenAPI 识别枚举默认是字符串类型，即实例名，标注 @JsonValue 后，code 仍被认为是字符串
     @EnumValue
     private final Integer code;
+
+    private final String name;
 
     public static UserType get(Integer role) {
         for (UserType userType : UserType.values()) {

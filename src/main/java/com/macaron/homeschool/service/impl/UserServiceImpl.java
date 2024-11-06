@@ -6,16 +6,21 @@ import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
+import com.macaron.homeschool.common.util.PasswordUtil;
 import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.UserMapper;
 import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;
+import com.macaron.homeschool.model.vo.UserVO;
 import com.macaron.homeschool.redis.lock.RedisLock;
 import com.macaron.homeschool.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,6 +35,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
 
     private final RedisLock redisLock;
+
+    @Override
+    public Optional<User> getUserById(Long userId) {
+        return this.lambdaQuery()
+                .eq(User::getId, userId)
+                .oneOpt();
+    }
 
     @Override
     public Optional<User> getUserByUsername(String username) {
@@ -47,14 +59,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             });
             // 注册用户
             User user = UserConverter.INSTANCE.userRegisterDTOToUser(userRegisterDTO);
-            // 家长无需审核
-            if(UserType.GUARDIAN.equals(user.getUserType())) {
+            if(UserConstants.NO_AUDIT_REQUIRED_ROLES.contains(user.getUserType())) {
                 user.setAuditStatus(AuditStatus.AUDIT_PASSED);
             }
+            // 加盐加密
+            user.setPassword(PasswordUtil.encrypt(userRegisterDTO.getPassword()));
             this.save(user);
             log.info("用户注册成功：{}", user);
             return user;
         }, () -> null);
+    }
+
+    @Override
+    public User checkAndGetUserById(Long userId) {
+        return getUserById(userId).orElseThrow(() ->
+                new GlobalServiceException(GlobalServiceStatusCode.USER_ACCOUNT_NOT_EXIST));
+    }
+
+    @Override
+    public List<UserVO> getUserList(List<UserType> userTypes) {
+        if(CollectionUtils.isEmpty(userTypes)) {
+            return new ArrayList<>();
+        }
+        List<User> userList = this.lambdaQuery()
+                .in(User::getUserType, userTypes)
+                .list();
+        return UserConverter.INSTANCE.userListToUserVOList(userList);
+    }
+
+    @Override
+    public void auditUser(Long userId, AuditStatus auditStatus) {
+        User updateUser = new User();
+        updateUser.setId(userId);
+        updateUser.setAuditStatus(auditStatus);
+        this.updateById(updateUser);
     }
 }
 

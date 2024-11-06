@@ -1,9 +1,13 @@
 package com.macaron.homeschool.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.macaron.homeschool.common.enums.AuditStatus;
+import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;
+import com.macaron.homeschool.model.vo.UserVO;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,8 +17,16 @@ import java.util.Optional;
 */
 public interface UserService extends IService<User> {
 
+    Optional<User> getUserById(Long userId);
+
     Optional<User> getUserByUsername(String username);
 
     User register(UserRegisterDTO userRegisterDTO);
+
+    User checkAndGetUserById(Long userId);
+
+    List<UserVO> getUserList(List<UserType> userTypes);
+
+    void auditUser(Long userId, AuditStatus auditStatus);
 
 }
