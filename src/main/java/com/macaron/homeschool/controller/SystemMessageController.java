@@ -1,0 +1,72 @@
+package com.macaron.homeschool.controller;
+
+import com.macaron.homeschool.common.SystemJsonResponse;
+import com.macaron.homeschool.common.annotation.Intercept;
+import com.macaron.homeschool.common.context.BaseContext;
+import com.macaron.homeschool.common.enums.UserType;
+import com.macaron.homeschool.model.dto.SystemMessageDTO;
+import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
+import com.macaron.homeschool.model.vo.SystemMessageVO;
+import com.macaron.homeschool.service.SystemMessageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * Created With Intellij IDEA
+ * Description:
+ * User: 马拉圈
+ * Date: 2024-11-06
+ * Time: 15:30
+ */
+@Slf4j
+@Validated
+@RestController
+@RequiredArgsConstructor
+@Tag(name = "系统消息测试接口")
+@RequestMapping("/api/v1/message/system")
+@Intercept(permit = {UserType.MANAGER})
+public class SystemMessageController {
+
+    private final SystemMessageService systemMessageService;
+
+    @PostMapping("/release")
+    @Operation(summary = "发布系统消息")
+    public SystemJsonResponse<Long> releaseSystemMessage(@Valid @RequestBody SystemMessageDTO systemMessageDTO) {
+        Long managerId = BaseContext.getCurrentUser().getUserId();
+        Long id = systemMessageService.releaseSystemMessage(managerId, systemMessageDTO);
+        return SystemJsonResponse.SYSTEM_SUCCESS(id);
+    }
+
+    @DeleteMapping("/remove/{id}")
+    @Operation(summary = "删除系统消息")
+    public SystemJsonResponse<?> removeSystemMessage(@PathVariable("id") @NotNull(message = "系统消息 id 不能为空") Long id) {
+        systemMessageService.removeSystemMessage(id);
+        return SystemJsonResponse.SYSTEM_SUCCESS();
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "查看系统消息列表")
+    @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
+    public SystemJsonResponse<List<SystemMessageVO>> querySystemMessageList() {
+        List<SystemMessageVO> systemMessageVOList = systemMessageService.querySystemMessageList();
+        return SystemJsonResponse.SYSTEM_SUCCESS(systemMessageVOList);
+    }
+
+    @GetMapping("/detail/{id}")
+    @Operation(summary = "查看系统消息详情")
+    @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
+    public SystemJsonResponse<SystemMessageDetailVO> querySystemMessageDetail(@PathVariable("id") @NotNull(message = "系统消息 id 不能为空") Long id) {
+        SystemMessageDetailVO systemMessageDetailVO = systemMessageService.querySystemMessageDetail(id);
+        return SystemJsonResponse.SYSTEM_SUCCESS(systemMessageDetailVO);
+    }
+
+}

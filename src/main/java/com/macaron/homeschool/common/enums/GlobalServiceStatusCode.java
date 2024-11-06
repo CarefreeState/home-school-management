@@ -54,6 +54,9 @@ public enum GlobalServiceStatusCode {
     AUDIT_STATUS_EXCEPTION(3001, "审核状态异常"),
     AUDIT_STATUS_NOT_APPROVED(3002, "未通过审核"),
 
+    /* 消息 4001-5000 */
+    SYSTEM_MESSAGE_NOT_EXISTS(4001, "系统消息不存在"),
+
     /* -------------- */;
 
     private final Integer code;
