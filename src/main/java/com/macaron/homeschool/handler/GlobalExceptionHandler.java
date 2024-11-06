@@ -5,7 +5,6 @@ import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;

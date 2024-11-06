@@ -1,6 +1,5 @@
 package com.macaron.homeschool.model.dto;
 
-import com.macaron.homeschool.common.enums.AuditStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 

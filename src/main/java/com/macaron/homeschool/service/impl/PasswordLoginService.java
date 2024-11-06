@@ -1,6 +1,5 @@
 package com.macaron.homeschool.service.impl;
 
-import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.common.jwt.JwtUtil;

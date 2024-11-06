@@ -6,25 +6,21 @@ import com.macaron.homeschool.common.base.BasePageQuery;
 import com.macaron.homeschool.common.base.BasePageResult;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
-import com.macaron.homeschool.model.converter.ClassMessageConverter;
 import com.macaron.homeschool.model.converter.SystemMessageConverter;
 import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.SystemMessageMapper;
 import com.macaron.homeschool.model.dto.SystemMessageDTO;
 import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
-import com.macaron.homeschool.model.entity.ClassMessage;
 import com.macaron.homeschool.model.entity.SystemMessage;
 import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
 import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
-import com.macaron.homeschool.model.vo.SystemMessageVO;
 import com.macaron.homeschool.service.SystemMessageService;
 import com.macaron.homeschool.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 

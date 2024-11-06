@@ -6,9 +6,7 @@ import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
 import com.macaron.homeschool.model.entity.SystemMessage;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
 import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
-import com.macaron.homeschool.model.vo.SystemMessageVO;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

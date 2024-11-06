@@ -3,12 +3,10 @@ package com.macaron.homeschool.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.model.dto.ClassMessageDTO;
 import com.macaron.homeschool.model.dto.ClassMessageQueryDTO;
-import com.macaron.homeschool.model.dto.SystemMessageDTO;
 import com.macaron.homeschool.model.entity.ClassMessage;
-import com.macaron.homeschool.model.entity.SystemMessage;
-import com.macaron.homeschool.model.vo.*;
+import com.macaron.homeschool.model.vo.ClassMessageDetailVO;
+import com.macaron.homeschool.model.vo.ClassMessageQueryVO;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

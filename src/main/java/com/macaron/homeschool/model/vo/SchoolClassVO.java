@@ -1,6 +1,5 @@
 package com.macaron.homeschool.model.vo;
 
-import com.macaron.homeschool.common.enums.AuditStatus;
 import lombok.Data;
 
 /**

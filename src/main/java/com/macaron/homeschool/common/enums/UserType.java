@@ -2,7 +2,6 @@ package com.macaron.homeschool.common.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

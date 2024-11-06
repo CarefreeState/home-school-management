@@ -8,7 +8,6 @@ import com.macaron.homeschool.model.dto.SystemMessageDTO;
 import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
 import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
-import com.macaron.homeschool.model.vo.SystemMessageVO;
 import com.macaron.homeschool.service.SystemMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created With Intellij IDEA

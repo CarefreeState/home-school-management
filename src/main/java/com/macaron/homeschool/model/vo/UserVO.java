@@ -1,7 +1,5 @@
 package com.macaron.homeschool.model.vo;
 
-import com.macaron.homeschool.common.enums.AuditStatus;
-import com.macaron.homeschool.common.enums.UserType;
 import lombok.Data;
 
 /**

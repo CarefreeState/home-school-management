@@ -15,15 +15,12 @@ import com.macaron.homeschool.model.entity.ClassMessage;
 import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.ClassMessageDetailVO;
 import com.macaron.homeschool.model.vo.ClassMessageQueryVO;
-import com.macaron.homeschool.model.vo.ClassMessageVO;
 import com.macaron.homeschool.service.ClassMessageService;
 import com.macaron.homeschool.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 

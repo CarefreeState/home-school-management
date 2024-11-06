@@ -2,12 +2,9 @@ package com.macaron.homeschool.model.converter;
 
 import com.macaron.homeschool.common.base.BasePageQuery;
 import com.macaron.homeschool.common.base.BasePageResult;
-import com.macaron.homeschool.model.dto.ClassMessageQueryDTO;
 import com.macaron.homeschool.model.dto.SystemMessageDTO;
 import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
-import com.macaron.homeschool.model.entity.ClassMessage;
 import com.macaron.homeschool.model.entity.SystemMessage;
-import com.macaron.homeschool.model.vo.ClassMessageQueryVO;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
 import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
 import com.macaron.homeschool.model.vo.SystemMessageVO;
