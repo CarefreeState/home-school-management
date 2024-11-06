@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.model.entity.ClassUserLink;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,6 +15,8 @@ import java.util.Optional;
 public interface ClassUserLinkService extends IService<ClassUserLink> {
 
     Optional<ClassUserLink> getClassUserLink(Long classId, Long userId);
+
+    List<Long> getClassIdsByUserId(Long userId);
 
     void createClassUserLink(Long classId, Long userId);
 

@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created With Intellij IDEA
@@ -27,5 +28,7 @@ public interface SchoolClassConverter {
     SchoolClassVO schoolClassToSchoolClassVO(SchoolClass schoolClass);
 
     List<SchoolClassVO> schoolClassListToSchoolClassVOList(List<SchoolClass> schoolClassList);
+
+    Set<SchoolClassVO> schoolClassSetToSchoolClassVOSet(Set<SchoolClass> schoolClassSet);
 
 }

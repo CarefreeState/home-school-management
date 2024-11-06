@@ -5,14 +5,15 @@ import com.macaron.homeschool.common.annotation.Intercept;
 import com.macaron.homeschool.common.context.BaseContext;
 import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.model.dto.SystemMessageDTO;
+import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
+import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
 import com.macaron.homeschool.model.vo.SystemMessageVO;
 import com.macaron.homeschool.service.SystemMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -46,19 +47,19 @@ public class SystemMessageController {
         return SystemJsonResponse.SYSTEM_SUCCESS(id);
     }
 
-    @DeleteMapping("/remove/{id}")
+    @DeleteMapping("/remove/{messageId}")
     @Operation(summary = "删除系统消息")
-    public SystemJsonResponse<?> removeSystemMessage(@PathVariable("id") @NotNull(message = "系统消息 id 不能为空") Long id) {
-        systemMessageService.removeSystemMessage(id);
+    public SystemJsonResponse<?> removeSystemMessage(@PathVariable("messageId") @NotNull(message = "系统消息 id 不能为空") Long messageId) {
+        systemMessageService.removeSystemMessage(messageId);
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
 
     @GetMapping("/list")
     @Operation(summary = "查看系统消息列表")
     @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
-    public SystemJsonResponse<List<SystemMessageVO>> querySystemMessageList() {
-        List<SystemMessageVO> systemMessageVOList = systemMessageService.querySystemMessageList();
-        return SystemJsonResponse.SYSTEM_SUCCESS(systemMessageVOList);
+    public SystemJsonResponse<SystemMessageQueryVO> querySystemMessageList(@Valid @RequestBody(required = false) SystemMessageQueryDTO systemMessageQueryDTO) {
+        SystemMessageQueryVO systemMessageQueryVO = systemMessageService.querySystemMessageList(systemMessageQueryDTO);
+        return SystemJsonResponse.SYSTEM_SUCCESS(systemMessageQueryVO);
     }
 
     @GetMapping("/detail/{id}")

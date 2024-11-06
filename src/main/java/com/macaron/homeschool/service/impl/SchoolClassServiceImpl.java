@@ -19,9 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
 * @author 马拉圈
@@ -41,9 +39,9 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
     private final SchoolClassMapper schoolClassMapper;
 
     @Override
-    public Optional<SchoolClass> getSchoolClass(Long id) {
+    public Optional<SchoolClass> getSchoolClass(Long classId) {
         return this.lambdaQuery()
-                .eq(SchoolClass::getId, id)
+                .eq(SchoolClass::getId, classId)
                 .oneOpt();
     }
 
@@ -52,36 +50,36 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
         SchoolClass schoolClass = SchoolClassConverter.INSTANCE.schoolClassDTOToSchoolClass(schoolClassDTO);
         schoolClass.setCreatorId(teacherId);
         this.save(schoolClass);
-        log.info("教师 {} 创建了班级 {}", teacherId, schoolClass);
+        log.info("老师 {} 创建了班级 {}", teacherId, schoolClass);
         return schoolClass.getId();
     }
 
     @Override
-    public SchoolClass checkAndGetSchoolClass(Long id) {
-        return getSchoolClass(id).orElseThrow(() ->
+    public SchoolClass checkAndGetSchoolClass(Long classId) {
+        return getSchoolClass(classId).orElseThrow(() ->
                 new GlobalServiceException(GlobalServiceStatusCode.SCHOOL_CLASS_NOT_EXISTS));
     }
 
     @Override
-    public void updateSchoolClass(Long id, Long userId, SchoolClassDTO schoolClassDTO) {
+    public void updateSchoolClass(Long classId, Long teacherId, SchoolClassDTO schoolClassDTO) {
         SchoolClass schoolClass = SchoolClassConverter.INSTANCE.schoolClassDTOToSchoolClass(schoolClassDTO);
-        SchoolClass dbSchoolClass = checkAndGetSchoolClass(id);
+        SchoolClass dbSchoolClass = checkAndGetSchoolClass(classId);
         // 审核通过无法修改（并发带来不了损失）
         if(AuditStatus.AUDIT_PASSED.equals(dbSchoolClass.getAuditStatus())) {
             throw new GlobalServiceException(GlobalServiceStatusCode.AUDIT_STATUS_APPROVED);
         }
-        if(!dbSchoolClass.getCreatorId().equals(userId)) {
+        if(!dbSchoolClass.getCreatorId().equals(teacherId)) {
             throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
         }
         this.lambdaUpdate()
-                .eq(SchoolClass::getId, id)
+                .eq(SchoolClass::getId, classId)
                 .update(schoolClass);
     }
 
     @Override
-    public void auditSchoolClass(Long id, AuditStatus auditStatus) {
+    public void auditSchoolClass(Long classId, AuditStatus auditStatus) {
         SchoolClass updateSchoolClass = new SchoolClass();
-        updateSchoolClass.setId(id);
+        updateSchoolClass.setId(classId);
         updateSchoolClass.setAuditStatus(auditStatus);
         this.updateById(updateSchoolClass);
     }
@@ -93,8 +91,25 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
         }
         List<SchoolClass> schoolClassList = this.lambdaQuery()
                 .in(SchoolClass::getAuditStatus, auditStatusList)
+                .orderBy(Boolean.TRUE, Boolean.TRUE, SchoolClass::getAuditStatus)
                 .list();
         return SchoolClassConverter.INSTANCE.schoolClassListToSchoolClassVOList(schoolClassList);
+    }
+
+    @Override
+    public Set<SchoolClassVO> querySelfSchoolClassSet(Long userId) {
+        List<SchoolClass> schoolClassList = this.lambdaQuery()
+                .eq(SchoolClass::getCreatorId, userId)
+                .list();
+        Set<SchoolClass> classSet = new LinkedHashSet<>(schoolClassList);
+        List<Long> classIdsByUserId = classUserLinkService.getClassIdsByUserId(userId);
+        if(!CollectionUtils.isEmpty(classIdsByUserId)) {
+            List<SchoolClass> classes = this.lambdaQuery()
+                    .in(SchoolClass::getClass, classIdsByUserId)
+                    .list();
+            classSet.addAll(classes);
+        }
+        return SchoolClassConverter.INSTANCE.schoolClassSetToSchoolClassVOSet(classSet);
     }
 
     @Override
@@ -119,18 +134,32 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
     }
 
     @Override
-    public List<SchoolClassUserVO> querySchoolClassUserList(Long classId) {
+    public List<SchoolClassUserVO> querySchoolClassUserList(Long classId, Long userId) {
         return schoolClassMapper.querySchoolClassUserList(classId);
     }
 
     @Override
-    public void auditClassUser(Long teacherId, Long classId, Long userId, AuditStatus auditStatus) {
-        SchoolClass dbSchoolClass = checkAndGetSchoolClass(classId);
-        // 判断是不是创建者
-        if(!dbSchoolClass.getCreatorId().equals(teacherId)) {
+    public void auditClassUser(Long classId, Long userId, AuditStatus auditStatus) {
+        classUserLinkService.auditClassUser(classId, userId, auditStatus);
+    }
+
+    @Override
+    public void checkCreatorOfSchoolClass(Long classId, Long userId) {
+        Long creatorId = checkAndGetSchoolClass(classId).getCreatorId();
+        if(!creatorId.equals(userId)) {
             throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
         }
-        classUserLinkService.auditClassUser(classId, userId, auditStatus);
+    }
+
+    @Override
+    public void checkPartnerOfSchoolClass(Long classId, Long userId) {
+        checkCreatorOfSchoolClass(classId, userId);
+        Boolean isPartner = classUserLinkService.getClassUserLink(classId, userId)
+                .map(cu -> AuditStatus.AUDIT_PASSED.equals(cu.getAuditStatus()))
+                .orElse(Boolean.FALSE);
+        if(Boolean.FALSE.equals(isPartner)) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+        }
     }
 }
 

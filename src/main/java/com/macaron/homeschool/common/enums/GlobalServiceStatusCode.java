@@ -57,6 +57,8 @@ public enum GlobalServiceStatusCode {
 
     /* 消息 4001-5000 */
     SYSTEM_MESSAGE_NOT_EXISTS(4001, "系统消息不存在"),
+    CLASS_MESSAGE_NOT_EXISTS(4002, "班级消息不存在"),
+    SITE_MESSAGE_NOT_EXISTS(4003, "站内信不存在"),
 
     /* 班级 5001-6000 */
     SCHOOL_CLASS_NOT_EXISTS(5001, "班级不存在"),

@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @GetMapping("/list/teacher")
-    @Operation(summary = "获取教师列表")
+    @Operation(summary = "获取老师列表")
     @Intercept(permit = {UserType.MANAGER})
     public SystemJsonResponse<List<UserVO>> getTeacherList() {
         List<UserVO> userList = userService.getUserList(List.of(UserType.TEACHER));

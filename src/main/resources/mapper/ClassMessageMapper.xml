@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.macaron.homeschool.model.entity.ClassMessage">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
             <result property="classId" column="class_id" jdbcType="BIGINT"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
@@ -16,7 +17,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,class_id,title,
+        id,creator_id,class_id,title,
         content,version,is_deleted,
         create_time,update_time
     </sql>

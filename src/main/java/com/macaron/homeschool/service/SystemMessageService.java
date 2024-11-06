@@ -2,8 +2,10 @@ package com.macaron.homeschool.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.model.dto.SystemMessageDTO;
+import com.macaron.homeschool.model.dto.SystemMessageQueryDTO;
 import com.macaron.homeschool.model.entity.SystemMessage;
 import com.macaron.homeschool.model.vo.SystemMessageDetailVO;
+import com.macaron.homeschool.model.vo.SystemMessageQueryVO;
 import com.macaron.homeschool.model.vo.SystemMessageVO;
 
 import java.util.List;
@@ -16,16 +18,16 @@ import java.util.Optional;
 */
 public interface SystemMessageService extends IService<SystemMessage> {
 
-    Optional<SystemMessage> getSystemMessage(Long id);
+    Optional<SystemMessage> getSystemMessage(Long messageId);
 
     Long releaseSystemMessage(Long managerId, SystemMessageDTO systemMessageDTO);
 
-    void removeSystemMessage(Long id);
+    void removeSystemMessage(Long messageId);
 
-    List<SystemMessageVO> querySystemMessageList();
+    SystemMessageQueryVO querySystemMessageList(SystemMessageQueryDTO systemMessageQueryDTO);
 
-    SystemMessage checkAndGetSystemMessage(Long id);
+    SystemMessage checkAndGetSystemMessage(Long messageId);
 
-    SystemMessageDetailVO querySystemMessageDetail(Long id);
+    SystemMessageDetailVO querySystemMessageDetail(Long messageId);
 
 }

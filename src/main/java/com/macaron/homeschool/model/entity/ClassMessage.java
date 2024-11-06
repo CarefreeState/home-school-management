@@ -13,6 +13,8 @@ import java.io.Serializable;
 @Data
 public class ClassMessage extends BaseIncrIDEntity implements Serializable {
 
+    private Long creatorId;
+
     private Long classId;
 
     private String title;
