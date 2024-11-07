@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登录</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="icon" href="img/logo2.png" type="image/x-icon" />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/logIn.css" />
+    <script src="js/url_handler.js"></script>
+  </head>
+  <body>
+    <div class="navigation">
+      <!-- 头像 -->
+      <img src="img/logo2.png" alt="未登录" />
+      <div class="title">未登录</div>
+      <div class="space"></div>
+      <a href="blog_lists.html">主页</a>
+    </div>
+    <!-- 登录页面 -->
+
+    <div class="login-Container">
+      <div class="dialog">
+        <h3>登录</h3>
+
+        <div id="fileImage">
+          <div>
+            <input id="i" type="button" value="" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <label for="username">用户名</label>
+          <input type="text" id="username" />
+        </div>
+        <div class="row">
+          <label for="password">密码</label>
+          <input type="password" id="password" />
+        </div>
+        <div class="r" style="margin-top: 25px">
+          <input
+            type="button"
+            id="goreg"
+            value="注册"
+            onclick="location.href = 'blog_register.html'"
+          />
+          <input type="button" id="submit" value="登录" onclick="login()" />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function init() {
+        jQuery.ajax({
+          method: "get",
+          url: "/user/is_login",
+          success: function (body) {
+            if (body.code == 200 && body.data == true) {
+              jQuery("#icon").attr("href", "img/logo1.png");
+              jQuery(".navigation img").attr("src", " img/logo1.png");
+              jQuery(".title").text("我的博客系统");
+              var newA = "";
+              newA += '<a href="myblog_lists.html">我的博客</a>';
+              newA += '<a href="blog_add.html">写博客</a>';
+              newA += '<a href="/user/logout">退出登录</a>';
+              jQuery(".navigation").append(jQuery(newA));
+            }
+          },
+        });
+      }
+      init();
+      jQuery("#username").val(getParamValue("username"));
+      jQuery("#username").focus();
+      jQuery("#username").blur(function () {
+        var username = jQuery("#username");
+        if (username.val().trim() != "") {
+          jQuery.ajax({
+            url: "/user/get_photo",
+            method: "post",
+            contentType: "application/json; charset=utf8",
+            data: JSON.stringify({
+              username: username.val().trim(),
+            }),
+            success: function (body) {
+              if (body.code == 200 && body.data != "") {
+                var img = "url(" + body.data + ")";
+                jQuery("#i").css("background-image", img);
+              } else {
+                jQuery("#i").css(
+                  "background-image",
+                  "url(blog_userImage/avatar.png)"
+                );
+              }
+            },
+          });
+        }
+      });
+      function login() {
+        var username = jQuery("#username");
+        var password = jQuery("#password");
+        // 1. 非空校验
+        if (username.val().trim() == "") {
+          alert("请输入用户名！");
+          username.focus();
+          return false;
+        }
+        if (password.val().trim() == "") {
+          alert("请输入密码！");
+          password.focus();
+          return false;
+        }
+        // 2. 发送请求
+        jQuery.ajax({
+          url: "/user/login",
+          method: "POST",
+          contentType: "application/json; charset=utf8",
+          data: JSON.stringify({
+            username: username.val().trim(),
+            password: password.val().trim(),
+          }),
+          // 3. 处理响应
+          success: function (body) {
+            if (body.code == 200) {
+              alert("登录成功！");
+              location.href = "blog_lists.html";
+            } else {
+              alert("登录失败：" + body.msg);
+            }
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

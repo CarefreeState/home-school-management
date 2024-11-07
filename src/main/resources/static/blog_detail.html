@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>博客详情</title>
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/details.css" />
+    <link id="icon" rel="icon" href="img/logo1.png" type="image/x-icon" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/url_handler.js"></script>
+    <link rel="stylesheet" href="editor.md/css/editormd.preview.min.css" />
+    <script src="editor.md/editormd.js"></script>
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+  </head>
+  <body>
+    <div class="navigation">
+      <img src="img/logo1.png" />
+      <div class="title">我的博客系统</div>
+
+      <div class="space"></div>
+
+      <a href="blog_lists.html">主页</a>
+      <a id="mine" href="myblog_lists.html">我的博客</a>
+      <a id="add" href="blog_add.html">写博客</a>
+      <a id="logout" href="/user/logout">退出登录</a>
+    </div>
+
+    <div class="container">
+      <div class="container-left">
+        <div class="card">
+          <img src="img/avatar.png" />
+          <h3></h3>
+          <a target="_blank" href="https://gitee.com/carefree-state"
+            >代码仓库链接</a
+          >
+          <div class="counter">
+            <span class="h">文章</span>
+            <span class="h">分类</span>
+          </div>
+
+          <div class="counter">
+            <span id="count"></span>
+            <span>1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-right">
+        <div class="article">
+          <h3></h3>
+          <div class="date"></div>
+          <div id="pc" style="opacity: 80%"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var aid = getParamValue("aid");
+      function init() {
+        if (aid == null || aid <= 0) {
+          alert("非法参数！");
+          return false;
+        }
+        jQuery.ajax({
+          method: "post",
+          url: "/art/detail",
+          contentType: "application/json; charset=utf8",
+          data: JSON.stringify({
+            id: aid,
+          }),
+          success: function (body) {
+            if (body.code == 200) {
+              // 1. 导航栏显示
+              if (body.data.login == false) {
+                jQuery("#icon").attr("href", "img/logo2.png");
+                jQuery(".navigation img").attr("src", " img/logo2.png");
+                jQuery(".navigation .space").css("width", "75%");
+                jQuery(".title").text("未登录");
+                jQuery("#mine").hide();
+                jQuery("#add").hide();
+                jQuery("#logout").text("登录");
+                jQuery("#logout").attr("href", "blog_login.html");
+              }
+              // 2. 文章数显示
+              jQuery("#count").text(body.data.count);
+              // 3. 用户信息显示
+              jQuery(".card img").attr("src", body.data.user.photo);
+              jQuery(".card h3").text(body.data.user.name);
+              if (body.data.user.git.trim() != "") {
+                jQuery(".card a").attr("href", body.data.user.git);
+              }
+              // 4. 文章信息显示
+              jQuery(".article h3").text(body.data.art.title);
+              jQuery(".article .date").text(
+                body.data.art.createtime + " 阅读量：" + body.data.art.rcount
+              );
+              editormd.markdownToHTML("pc", {
+                markdown: body.data.art.content,
+              });
+            } else {
+              alert("查看失败：" + body.msg);
+            }
+          },
+        });
+      }
+      init();
+    </script>
+  </body>
+</html>

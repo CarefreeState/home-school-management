@@ -1,0 +1,46 @@
+.blog-edit-container {
+  width: 1000px;
+  height: calc(100% - 50px);
+  margin: 0 auto;
+}
+.blog-edit-container .title {
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#text {
+  height: 40px;
+  width: 896px;
+  border-radius: 10px;
+  border: none;
+  font-size: 20px;
+  text-indent: 15px;
+  color: rgb(251, 114, 153);
+}
+#submit {
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 900;
+  background-color: rgb(251, 114, 153);
+  transition: all 0.618s;
+}
+#submit:hover {
+  background-color: rgb(101, 94, 252);
+  color: rgba(0, 0, 0, 0.618);
+}
+.blog-edit-container #form {
+  height: 100%;
+}
+
+/* 由于编辑器是多层元素覆盖的效果，所以仅仅在这里bgc调颜色是不够的 */
+#editor {
+  border-radius: 10px;
+  /* background-color: rgba(255, 255, 255, 0.618); */
+  opacity: 80%;
+  /* 不是小数而是百分数
+    这里设置的透明，不涉及颜色，并且殃及子元素！ */
+}
