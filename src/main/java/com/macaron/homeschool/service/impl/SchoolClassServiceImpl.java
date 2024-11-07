@@ -105,7 +105,7 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
         List<Long> classIdsByUserId = classUserLinkService.getClassIdsByUserId(userId);
         if(!CollectionUtils.isEmpty(classIdsByUserId)) {
             List<SchoolClass> classes = this.lambdaQuery()
-                    .in(SchoolClass::getClass, classIdsByUserId)
+                    .in(SchoolClass::getId, classIdsByUserId)
                     .list();
             classSet.addAll(classes);
         }
@@ -126,7 +126,7 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
             }
             // 若未加入则加入
             classUserLinkService.getClassUserLink(classId, userId).ifPresentOrElse(ct -> {
-                throw new GlobalServiceException(GlobalServiceStatusCode.SCHOOL_CLASS_TEACHER_ATTENDED);
+                throw new GlobalServiceException(GlobalServiceStatusCode.SCHOOL_CLASS_USER_ATTENDED);
             }, () -> {
                 classUserLinkService.createClassUserLink(classId, userId);
             });

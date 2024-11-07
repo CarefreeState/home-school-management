@@ -4,7 +4,9 @@ import com.macaron.homeschool.common.SystemJsonResponse;
 import com.macaron.homeschool.common.annotation.Intercept;
 import com.macaron.homeschool.common.context.BaseContext;
 import com.macaron.homeschool.common.enums.AuditStatus;
+import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.enums.UserType;
+import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.dto.AuditClassDTO;
 import com.macaron.homeschool.model.dto.AuditClassUserDTO;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
@@ -43,7 +45,7 @@ public class SchoolClassController {
     @PostMapping("/create")
     @Operation(summary = "创建一个新班级")
     @Intercept(permit = {UserType.TEACHER})
-    public SystemJsonResponse<Long> createSchoolClass(@Valid SchoolClassDTO schoolClassDTO) {
+    public SystemJsonResponse<Long> createSchoolClass(@Valid @RequestBody SchoolClassDTO schoolClassDTO) {
         Long teacherId = BaseContext.getCurrentUser().getUserId();
         Long classId = schoolClassService.createSchoolClass(teacherId, schoolClassDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS(classId);
@@ -53,7 +55,7 @@ public class SchoolClassController {
     @Operation(summary = "更新班级信息")
     @Intercept(permit = {UserType.TEACHER})
     public SystemJsonResponse<?> updateSchoolClass(@PathVariable("classId") @NotNull(message = "班级 id 不能为空") Long classId,
-                                                   @Valid SchoolClassDTO schoolClassDTO) {
+                                                   @Valid @RequestBody SchoolClassDTO schoolClassDTO) {
         Long teacherId = BaseContext.getCurrentUser().getUserId();
         schoolClassService.updateSchoolClass(classId, teacherId, schoolClassDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS();
@@ -106,10 +108,14 @@ public class SchoolClassController {
     @Intercept(permit = {UserType.TEACHER})
     public SystemJsonResponse<?> auditClassUser(@Valid @RequestBody AuditClassUserDTO auditClassUserDTO) {
         Long teacherId = BaseContext.getCurrentUser().getUserId();
+        Long userId = auditClassUserDTO.getUserId();
+        if(teacherId.equals(userId)) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+        }
         // 判断是不是创建者
         Long classId = auditClassUserDTO.getClassId();
         schoolClassService.checkCreatorOfSchoolClass(classId, teacherId);
-        schoolClassService.auditClassUser(classId, auditClassUserDTO.getUserId(), AuditStatus.get(auditClassUserDTO.getAuditStatus()));
+        schoolClassService.auditClassUser(classId, userId, AuditStatus.get(auditClassUserDTO.getAuditStatus()));
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
 

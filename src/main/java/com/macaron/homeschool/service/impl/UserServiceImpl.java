@@ -83,6 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         List<User> userList = this.lambdaQuery()
                 .in(User::getUserType, userTypes)
+                .orderBy(Boolean.TRUE, Boolean.TRUE, User::getAuditStatus)
                 .list();
         return UserConverter.INSTANCE.userListToUserVOList(userList);
     }

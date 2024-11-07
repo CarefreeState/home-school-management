@@ -1,6 +1,7 @@
 package com.macaron.homeschool.common.base;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.macaron.homeschool.common.constants.DateTimeConstants;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,14 +29,14 @@ public class BaseIncrIDEntity implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = DateTimeConstants.DATE_TIME_PATTERN)
     protected LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = DateTimeConstants.DATE_TIME_PATTERN)
     private LocalDateTime updateTime;
 
     /**

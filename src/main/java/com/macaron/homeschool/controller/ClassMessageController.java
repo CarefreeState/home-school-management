@@ -67,7 +67,7 @@ public class ClassMessageController {
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
 
-    @GetMapping("/query")
+    @PostMapping("/query")
     @Operation(summary = "查看班级通知列表")
     @Intercept(permit = {UserType.TEACHER, UserType.GUARDIAN})
     public SystemJsonResponse<ClassMessageQueryVO> queryClassMessageList(@Valid @RequestBody(required = false) ClassMessageQueryDTO classMessageQueryDTO) {

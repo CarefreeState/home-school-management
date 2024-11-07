@@ -6,7 +6,7 @@
 
     <resultMap id="SchoolClassUserMap" type="com.macaron.homeschool.model.vo.SchoolClassUserVO">
         <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
-        <association property="userVO" columnPrefix="u_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.BaseResultMap"/>
+        <association property="userVO" columnPrefix="u_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
     </resultMap>
 
     <select id="querySchoolClassUserList" parameterType="java.lang.Long" resultMap="SchoolClassUserMap">
@@ -15,7 +15,7 @@
             u.user_type u_user_type, u.audit_status u_audit_status
         from school_class c
              left join class_user_link cu on c.id = cu.class_id and c.is_deleted = 0 and cu.is_deleted = 0
-             left join user u on cu.user_id = u.id = 0 and cu.is_deleted = 0 and u.is_deleted = 0
+             left join user u on cu.user_id = u.id and cu.is_deleted = 0 and u.is_deleted = 0
         where
             c.is_deleted = 0 and cu.id is not null and c.id = #{classId,jdbcType=BIGINT}
         order by u_user_type

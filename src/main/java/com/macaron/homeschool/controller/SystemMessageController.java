@@ -57,7 +57,7 @@ public class SystemMessageController {
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
 
-    @GetMapping("/list")
+    @PostMapping("/query")
     @Operation(summary = "查看系统消息列表")
     @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
     public SystemJsonResponse<SystemMessageQueryVO> querySystemMessageList(@Valid @RequestBody(required = false) SystemMessageQueryDTO systemMessageQueryDTO) {

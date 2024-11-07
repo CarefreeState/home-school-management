@@ -62,7 +62,7 @@ public enum GlobalServiceStatusCode {
 
     /* 班级 5001-6000 */
     SCHOOL_CLASS_NOT_EXISTS(5001, "班级不存在"),
-    SCHOOL_CLASS_TEACHER_ATTENDED(5002, "老师已加入该班级"),
+    SCHOOL_CLASS_USER_ATTENDED(5002, "用户已加入该班级"),
 
     /* -------------- */;
 

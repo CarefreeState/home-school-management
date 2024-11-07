@@ -44,12 +44,16 @@ public class SiteMessageController {
     @Operation(summary = "发布站内信")
     public SystemJsonResponse<Long> releaseSiteMessage(@Valid @RequestBody SiteMessageDTO siteMessageDTO) {
         Long userId = BaseContext.getCurrentUser().getUserId();
-        Long classId = siteMessageDTO.getClassId();
+        Long recipientId = siteMessageDTO.getRecipientId();
+        if(userId.equals(recipientId)) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+        }
         // 判断班级是否有效
+        Long classId = siteMessageDTO.getClassId();
         schoolClassService.checkSchoolClassApproved(classId);
         // 判断是否是班级的人
         schoolClassService.checkPartnerOfSchoolClass(classId, userId);
-        schoolClassService.checkPartnerOfSchoolClass(classId, siteMessageDTO.getRecipientId());
+        schoolClassService.checkPartnerOfSchoolClass(classId, recipientId);
         // 发布
         Long messageId = siteMessageService.releaseSiteMessage(userId, siteMessageDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS(messageId);
@@ -66,7 +70,7 @@ public class SiteMessageController {
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
 
-    @GetMapping("/query")
+    @PostMapping("/query")
     @Operation(summary = "查看站内信列表")
     public SystemJsonResponse<SiteMessageQueryVO> querySystemMessageList(@Valid @RequestBody(required = false) SiteMessageQueryDTO siteMessageQueryDTO) {
         Long userId = BaseContext.getCurrentUser().getUserId();
