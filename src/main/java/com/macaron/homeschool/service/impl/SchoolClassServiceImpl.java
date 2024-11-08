@@ -10,7 +10,6 @@ import com.macaron.homeschool.model.dao.mapper.SchoolClassMapper;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.entity.SchoolClass;
 import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
-import com.macaron.homeschool.model.vo.SchoolClassUserVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 import com.macaron.homeschool.redis.lock.RedisLock;
 import com.macaron.homeschool.service.ClassUserLinkService;

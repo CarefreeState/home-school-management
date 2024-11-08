@@ -3,7 +3,6 @@ package com.macaron.homeschool.handler;
 import com.macaron.homeschool.common.SystemJsonResponse;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

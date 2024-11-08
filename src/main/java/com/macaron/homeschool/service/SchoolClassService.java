@@ -5,7 +5,6 @@ import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.entity.SchoolClass;
 import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
-import com.macaron.homeschool.model.vo.SchoolClassUserVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 
 import java.util.List;

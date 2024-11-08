@@ -1,7 +1,6 @@
 package com.macaron.homeschool.model.vo;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Created With Intellij IDEA

@@ -11,7 +11,6 @@ import com.macaron.homeschool.model.dto.AuditClassDTO;
 import com.macaron.homeschool.model.dto.AuditClassUserDTO;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
-import com.macaron.homeschool.model.vo.SchoolClassUserVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 import com.macaron.homeschool.service.SchoolClassService;
 import io.swagger.v3.oas.annotations.Operation;
