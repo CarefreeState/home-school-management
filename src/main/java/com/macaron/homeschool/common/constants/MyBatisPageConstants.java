@@ -11,7 +11,7 @@ public interface MyBatisPageConstants {
 
     Long DEFAULT_CURRENT = 1L;
 
-    Long DEFAULT_PAGE_SIZE = 20L;
+    Long DEFAULT_PAGE_SIZE = 10L;
 
     String DEFAULT_SORT_BY = "create_time";
 

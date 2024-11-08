@@ -13,9 +13,13 @@
 </head>
 <body>
 <div class="navigation">
-    <img src="./img/logo.png" />
+    <div class="space1" style="display: flex; justify-content: flex-start">
+        <img src="./img/logo.png"/>
+    </div>
     <div class="title">系统消息详情</div>
-    <div class="space"></div>
+    <div class="space2" style="display: flex; justify-content: flex-end">
+
+    </div>
 </div>
 
 <div class="container">
@@ -65,15 +69,15 @@
 
     jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
         if(data.userType === 1) {
-            jQuery(".navigation").append('<a href="./class_adudit.html">班级审核</a>');
+            jQuery(".space2").append('<a href="./class_adudit.html">班级审核</a>');
         } else {
-            jQuery(".navigation").append('<a href="./my_class_list.html">我的班级</a>');
-            jQuery(".navigation").append('<a href="./class_list.html">班级列表</a>');
-            jQuery(".navigation").append('<a href="./class_message_list.html">班级消息</a>');
-            jQuery(".navigation").append('<a href="./site_message_list.html">站内信</a>');
+            jQuery(".space2").append('<a href="./my_class_list.html">我的班级</a>');
+            jQuery(".space2").append('<a href="./class_list.html">班级列表</a>');
+            jQuery(".space2").append('<a href="./class_message_list.html">班级消息</a>');
+            jQuery(".space2").append('<a href="./site_message_list.html">站内信</a>');
         }
-        jQuery(".navigation").append('<a href="./system_message_list.html">系统消息</a>');
-        jQuery(".navigation").append('<a href="./login.html">登录</a>');
+        jQuery(".space2").append('<a href="./system_message_list.html">系统消息</a>');
+        jQuery(".space2").append('<a href="./login.html">登录</a>');
     });
 
 

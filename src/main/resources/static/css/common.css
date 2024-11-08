@@ -27,11 +27,6 @@ body {
 }
 .navigation {
   height: 50px;
-
-  font-weight: 300;
-  font-family: "Courier New", Courier, monospace;
-  color: white;
-
   background-color: rgba(50, 50, 50, 0.618);
   display: flex;
   align-items: center;
@@ -41,21 +36,31 @@ body {
   height: 40px;
   margin-left: 30px;
   margin-right: 10px;
-  background-image: "https://img1.baidu.com/it/u=4205447136,2730860147&fm=253&fmt=auto&app=138&f=JPEG?w=300&h=300";
   border-radius: 20px;
 }
+
 .navigation a {
   color: rgba(255, 255, 255, 0.7);
   font-weight: 900;
   font-family: "微软雅黑";
-
   text-decoration: none;
   padding: 0px 10px;
   /* 按偏了也能选中，扩大点击范围， 更加号的体验*/
 }
 
-.navigation .space {
-  width: 60%;
+.navigation .space1 {
+  width: 5%;
+}
+.title {
+  width: 10%;
+  font-weight: 300;
+  font-family: "Courier New", Courier, monospace;
+  color: white;
+  text-decoration: none;
+  padding: 0px 10px;
+}
+.navigation .space2 {
+  width: 75%;
 }
 
 .container {
