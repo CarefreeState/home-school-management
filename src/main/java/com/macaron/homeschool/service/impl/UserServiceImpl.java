@@ -55,7 +55,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String username = userRegisterDTO.getUsername();
         return redisLock.tryLockGetSomething(UserConstants.USER_REGISTER_LOCK + username, () -> {
             getUserByUsername(username).ifPresent(account -> {
-                throw new GlobalServiceException(String.format("用户 %s，账户已存在，注册失败", account), GlobalServiceStatusCode.USER_ACCOUNT_ALREADY_EXIST);
+                throw new GlobalServiceException(String.format("账户 %s 已存在，注册失败", username), GlobalServiceStatusCode.USER_ACCOUNT_ALREADY_EXIST);
             });
             // 注册用户
             User user = UserConverter.INSTANCE.userRegisterDTOToUser(userRegisterDTO);

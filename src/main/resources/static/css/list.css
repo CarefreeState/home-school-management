@@ -44,6 +44,25 @@
   /* 对所有的变化都缓慢持续2s
     1. 悬停于按钮
     2. 离开按钮 */
+  cursor: pointer;
+}
+.blog span {
+  display: block;
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  width: 120px;
+  height: 40px;
+  font-weight: 900;
+  border: black 2px solid;
+  line-height: 40px;
+  /*当行高对于height的时候，恰好文本水平居中*/
+  margin: 20px auto;
+  transition: all 0.618s;
+  /* 对所有的变化都缓慢持续2s
+    1. 悬停于按钮
+    2. 离开按钮 */
+  cursor: pointer;
 }
 #del {
   display: block;
@@ -61,6 +80,7 @@
   /* 对所有的变化都缓慢持续2s
     1. 悬停于按钮
     2. 离开按钮 */
+  cursor: pointer;
 }
 /* 伪类选择器 ，选中的是元素的状态，
 hover就是获取鼠标悬停的状态*/
@@ -68,6 +88,13 @@ hover就是获取鼠标悬停的状态*/
   /*选中后的改变的属性*/
   background-color: rgb(147, 210, 253);
   color: rgb(76, 66, 136);
+  cursor: pointer;
+}
+.blog span:hover {
+  /*选中后的改变的属性*/
+  background-color: rgb(147, 210, 253);
+  color: rgb(76, 66, 136);
+  cursor: pointer;
 }
 #del:hover {
   /*选中后的改变的属性*/
@@ -87,4 +114,73 @@ hover就是获取鼠标悬停的状态*/
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+#current {
+  width: 50px;
+  height: 25px;
+  font-size: 15px;
+  text-indent: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: rgba(251, 114, 153, 0.5) 2px solid;
+}
+
+#pageSize {
+  width: 50px;
+  height: 25px;
+  font-size: 15px;
+  text-indent: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: rgba(251, 114, 153, 0.5) 2px solid;
+}
+
+#class {
+  width: 125px;
+  height: 25px;
+  font-size: 15px;
+  text-indent: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: rgba(251, 114, 153, 0.5) 2px solid;
+}
+#opposite {
+  width: 75px;
+  height: 25px;
+  font-size: 15px;
+  text-indent: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: rgba(251, 114, 153, 0.5) 2px solid;
+}
+
+.blog-pagnation-wrapper .row {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+
+.blog-pagnation-wrapper {
+  background-color: rgba(255, 255, 255, 0.8);
+  height: 40px;
+  margin: 16px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.blog-pagnation-item {
+  display: inline-block;
+  padding: 8px;
+  border: 1px solid #d0d0d5;
+  color: #333;
+}
+.blog-pagnation-item:hover {
+  background: rgb(252, 133, 167);
+  color: #fff;
+}
+.blog-pagnation-item.actvie {
+  background: rgb(252, 133, 167);
+  color: #fff;
 }

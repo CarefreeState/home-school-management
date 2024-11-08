@@ -8,7 +8,10 @@ import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.dto.SiteMessageDTO;
 import com.macaron.homeschool.model.dto.SiteMessageQueryDTO;
+import com.macaron.homeschool.model.dto.SiteOppositeQueryDTO;
 import com.macaron.homeschool.model.vo.SiteMessageQueryVO;
+import com.macaron.homeschool.model.vo.SiteMessageVO;
+import com.macaron.homeschool.model.vo.UserVO;
 import com.macaron.homeschool.service.SchoolClassService;
 import com.macaron.homeschool.service.SiteMessageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created With Intellij IDEA
@@ -76,5 +81,22 @@ public class SiteMessageController {
         Long userId = BaseContext.getCurrentUser().getUserId();
         SiteMessageQueryVO siteMessageQueryVO = siteMessageService.querySiteMessageList(userId, siteMessageQueryDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS(siteMessageQueryVO);
+    }
+
+    @PostMapping("/opposites")
+    @Operation(summary = "查看与自己交流过的用户列表")
+    public SystemJsonResponse<List<UserVO>> queryOppositeList(@Valid @RequestBody(required = false) SiteOppositeQueryDTO siteOppositeQueryDTO) {
+        Long userId = BaseContext.getCurrentUser().getUserId();
+        List<UserVO> userVOList = siteMessageService.queryOppositeList(userId, siteOppositeQueryDTO);
+        return SystemJsonResponse.SYSTEM_SUCCESS(userVOList);
+    }
+
+    @GetMapping("/detail/{messageId}")
+    @Operation(summary = "查看站内信详情")
+    @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
+    public SystemJsonResponse<SiteMessageVO> querySiteMessageDetail(@PathVariable("messageId") @NotNull(message = "系统消息 id 不能为空") Long messageId) {
+        Long userId = BaseContext.getCurrentUser().getUserId();
+        SiteMessageVO siteMessageVO = siteMessageService.querySiteMessageDetail(userId, messageId);
+        return SystemJsonResponse.SYSTEM_SUCCESS(siteMessageVO);
     }
 }

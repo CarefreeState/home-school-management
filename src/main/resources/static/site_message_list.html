@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>站内信</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/list.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="./img/logo.png" type="image/x-icon" />
+
+</head>
+<body>
+<div class="navigation">
+    <img src="./img/logo.png" />
+    <div class="title">站内信</div>
+    <div class="space"></div>
+    <a href="./my_class_list.html">我的班级</a>
+    <a href="./class_list.html">班级列表</a>
+    <a href="./class_message_list.html">班级消息</a>
+    <a href="./system_message_list.html">系统消息</a>
+    <a href="./login.html">登录</a>
+</div>
+
+<!-- 页面主体 -->
+<div class="container">
+    <div class="container-right" style="width: 100%">
+        <div class="article" style="height: 90%">
+        </div>
+        <div class="blog-pagnation-wrapper">
+            <div class="row">
+                <label for="class">班级</label>
+                <select id="class">
+                    <option style='display: none'></option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="opposite">对象</label>
+                <select id="opposite">
+                    <option style='display: none'></option>
+                </select>
+            </div>
+            <button class="blog-pagnation-item" onclick="tofirst()">首页</button>
+            <button class="blog-pagnation-item" onclick="toPrev()">上一页</button>
+            <button class="blog-pagnation-item" onclick="toNext()">下一页</button>
+            <button class="blog-pagnation-item" onclick="toLast()">末页</button>
+            <div class="row">
+                <label for="current">当前页码</label>
+                <input type="text" id="current" name="current"/>
+                <label for="current">共 <span id="pages"></span> 页</label>
+            </div>
+            <div class="row">
+                <label for="pageSize">页内条数</label>
+                <input type="text" id="pageSize" name="pageSize" />
+                <label for="pageSize">共 <span id="total"></span> 条</label>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- 导入JS -->
+    <script src="./dist/js/jquery-3.6.3.js"></script>
+    <script src="./dist/js/jquery.cookie.js"></script>
+    <script src="./dist/js/jquery.toast.js"></script>
+    <script src="./js/urlHandler.js"></script>
+    <script src="./js/redirect.js"></script>
+    <script src="./js/token.js"></script>
+    <script src="./js/userType.js"></script>
+    <script src="./js/request.js"></script>
+    <script>
+
+        jsonRequestWithToken("/api/v1/class/query/self", "GET", null, function (data) {
+            for (var item of data) {
+                var option = '<option value="' + item.id + '">' + item.className + '</option>'
+                jQuery("#class").append(jQuery(option));
+            }
+        })
+        jsonRequestWithToken("/api/v1/message/site/opposites", "POST", {
+            classId: jQuery("#class").val(),
+        }, function (data) {
+            for (var item of data) {
+                var option = '<option value="' + item.id + '">' + item.nickname + '</option>'
+                jQuery("#opposite").append(jQuery(option));
+            }
+        })
+
+        function querySiteMessage() {
+            jQuery(".article").empty();
+            jsonRequestWithToken(
+                "/api/v1/message/site/query",
+                "POST",
+                {
+                    classId: jQuery("#class").val(),
+                    oppositeId: jQuery("#opposite").val(),
+                    current: jQuery("#current").val(),
+                    pageSize: jQuery("#pageSize").val(),
+                },
+                function (data) {
+                    jQuery("#current").val(data.current);
+                    jQuery("#pages").html(data.pages);
+                    jQuery("#pageSize").val(data.pageSize);
+                    jQuery("#total").html(data.total);
+                    var resultList = data.list;
+                    for (i = 0; i < resultList.length; i++) {
+                        var item = resultList[i];
+                        var art = '<div class="blog">';
+                        art += '<div class="thing">';
+                        art += '<div class="title">' + item.sender.nickname + "（" + getType(item.sender.userType) + "）👉 " +
+                             item.recipient.nickname + "（" + getType(item.recipient.userType) + "）" + "</div></div>";
+                        art += '<div class="date">' + item.createTime + "</div>";
+                        art += '<div class="content">' + item.title + "</div>";
+                        art += '<a href="./site_message_detail.html?messageId=' + item.id + '">查看详情</a>';
+                        art += "</div>";
+                        jQuery(".article").append(jQuery(art));
+                    }
+                }
+            );
+        }
+        querySiteMessage();
+        jQuery("#class").change(querySiteMessage);
+        jQuery("#opposite").change(querySiteMessage);
+        jQuery("#current").blur(querySiteMessage);
+        jQuery("#pageSize").blur(querySiteMessage);
+
+        function tofirst() {
+            jQuery("#current").val(1);
+            querySiteMessage();
+        }
+        function toLast() {
+            jQuery("#current").val(jQuery("#pages").html());
+            querySiteMessage();
+        }
+        function toPrev() {
+            jQuery("#current").val(Number(jQuery("#current").val()) - 1);
+            querySiteMessage();
+        }
+        function toNext() {
+            jQuery("#current").val(Number(jQuery("#current").val()) + 1);
+            querySiteMessage();
+        }
+    </script>
+</body>
+</html>

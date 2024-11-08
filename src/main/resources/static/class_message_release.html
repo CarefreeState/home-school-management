@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/edit.css" />
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="./img/logo.png" type="image/x-icon" />
+    <title>发布班级通知</title>
+</head>
+<body>
+<div class="navigation">
+    <!-- 头像 -->
+    <img src="./img/logo.png" />
+    <div class="title">发布班级通知（<span id="creator"></span> 👉 <span id="className"></span>）</div>
+    <div class="space"></div>
+    <a href="./my_class_list.html">我的班级</a>
+    <a href="./class_list.html">班级列表</a>
+    <a href="./class_message_list.html">班级消息</a>
+    <a href="./site_message_list.html">站内信</a>
+    <a href="./system_message_list.html">系统消息</a>
+    <a href="./login.html">登录</a>
+</div>
+<div class="blog-edit-container">
+    <!-- 标题编辑区 -->
+    <div id="form">
+        <div class="title">
+            <input type="text" id="text" name="title" />
+            <input type="button" id="submit" value="提交" onclick="publish()" />
+        </div>
+        <!-- 创建一个id为editor的div id！-->
+        <div id="editor">
+          <textarea
+                  id="content"
+                  name="content"
+                  style="display: none"
+          ></textarea>
+        </div>
+    </div>
+</div>
+<script src="./dist/js/jquery-3.6.3.js"></script>
+<script src="./dist/js/jquery.cookie.js"></script>
+<script src="./dist/js/jquery.toast.js"></script>
+<script src="./js/urlHandler.js"></script>
+<script src="./js/redirect.js"></script>
+<script src="./js/token.js"></script>
+<script src="./js/request.js"></script>
+<script src="./js/userType.js"></script>
+<script src="editor.md/lib/marked.min.js"></script>
+<script src="editor.md/lib/prettify.min.js"></script>
+<script src="editor.md/editormd.js"></script>
+
+<script>
+    // editormd函数构造编辑器对象，参数则是编辑器元素的id，以及js对象，初始化量
+    // 这一步重点在于默默帮你构建了对象！
+    //其他属性在这里设置就行了，因为这里的优先级会更高！
+    //由于不能有-号，所以圆角矩形不能在这里设置
+    // 这个构造器，默认会溢出将滚动条给markdown编辑器！
+    var editor = editormd("editor", {
+        width: "100%",
+        height: "calc(100% - 50px)",
+        markdown: "# Hello",
+        path: "editor.md/lib/",
+        saveHTMLToTextarea: true,
+    });
+    jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
+        jQuery("#creator").html(data.nickname);
+    });
+    jsonRequestWithToken("/api/v1/class/query/users/" + getParamValue("classId"), "GET", null, function (data) {
+        jQuery("#className").html(data.className);
+    });
+
+    function publish() {
+        jsonRequestWithToken("/api/v1/message/class/release", "POST", {
+            classId: getParamValue("classId"),
+            title: jQuery("#text").val(),
+            content: jQuery("#content").val(),
+        }, function (data) {
+            jQuery.toast({
+                heading: "成功",
+                text: "发布成功",
+                icon: "success",
+                allowToastClose: true,
+            });
+            toClassMessageDetail(data);
+        })
+    }
+</script>
+</body>
+</html>

@@ -41,18 +41,25 @@ public class UserInterceptor implements HandlerInterceptor {
         // 获取 intercept 注解实例
         Intercept intercept = InterceptHelper.getIntercept(targetMethod);
         // 判断是否忽略
-        if(InterceptHelper.isIgnore(intercept)) {
+        if (InterceptHelper.isIgnore(intercept)) {
             return Boolean.TRUE;
         }
-        UserHelper userHelper = Optional.ofNullable(JwtUtil.parseJwt(request, response, UserHelper.class))
-                .orElseThrow(() -> new GlobalServiceException("用户未登录，token 为空", GlobalServiceStatusCode.USER_NOT_LOGIN));
+        UserHelper userHelper = null;
+        try {
+            userHelper = Optional.ofNullable(JwtUtil.parseJwt(request, response, UserHelper.class)).orElseGet(() -> {
+                log.warn("用户未登录，token 为空");
+                throw new GlobalServiceException(GlobalServiceStatusCode.USER_NOT_LOGIN);
+            });
+        } catch (Exception e) {
+            throw new GlobalServiceException("登录失效", GlobalServiceStatusCode.USER_NOT_LOGIN);
+        }
         log.info("登录信息 -> {}", userHelper);
         //通过线程局部变量设置当前线程用户信息
         BaseContext.setCurrentUser(userHelper);
         // 记录接口的访问记录
         log.info("账户 {} 访问接口 {} ", userHelper.getUserId(), request.getRequestURI());
         // permit 中没有 role 就会抛异常
-        if(!InterceptHelper.isValid(intercept, userHelper.getRole())) {
+        if (!InterceptHelper.isValid(intercept, userHelper.getRole())) {
             throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
         }
         return Boolean.TRUE;

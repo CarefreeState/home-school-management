@@ -81,10 +81,9 @@ body {
 
 .card {
   margin-top: 10px;
-  height: 333px;
+  height: 250px;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.618);
-
   border-radius: 30px;
 }
 
@@ -100,14 +99,77 @@ body {
 }
 .card a {
   display: block;
+  background-color: rgba(255, 200, 50, 0.6);
+  color: black;
   text-decoration: none;
-  color: rgba(251, 114, 153, 0.9);
-  font-weight: 900;
-  font-family: "微软雅黑";
-
   text-align: center;
-  padding: 5px;
-  margin-bottom: 20px;
+  width: 120px;
+  height: 40px;
+  font-weight: 900;
+  border: black 2px solid;
+  line-height: 40px;
+  /*当行高对于height的时候，恰好文本水平居中*/
+  margin: 20px auto;
+  transition: all 0.618s;
+  /* 对所有的变化都缓慢持续2s
+    1. 悬停于按钮
+    2. 离开按钮 */
+  cursor: pointer;
+}
+#normal {
+  display: block;
+  background-color: rgba(255, 200, 50, 0.6);
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  width: 120px;
+  height: 40px;
+  font-weight: 900;
+  border: black 2px solid;
+  line-height: 40px;
+  /*当行高对于height的时候，恰好文本水平居中*/
+  margin: 20px auto;
+  transition: all 0.618s;
+  /* 对所有的变化都缓慢持续2s
+    1. 悬停于按钮
+    2. 离开按钮 */
+  cursor: pointer;
+}
+
+.card .del {
+  display: block;
+  background-color: rgba(255, 0, 0, 0.6);
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  width: 120px;
+  height: 40px;
+  font-weight: 900;
+  border: black 2px solid;
+  line-height: 40px;
+  /*当行高对于height的时候，恰好文本水平居中*/
+  margin: 20px auto;
+  transition: all 0.618s;
+  cursor: pointer;
+}
+
+.card a:hover {
+  /*选中后的改变的属性*/
+  background-color: rgb(147, 210, 253);
+  color: rgb(76, 66, 136);
+  cursor: pointer;
+}
+.card .del:hover {
+  /*选中后的改变的属性*/
+  background-color: rgb(147, 210, 253);
+  color: rgb(76, 66, 136);
+  cursor: pointer;
+}
+#normal:hover {
+  /*选中后的改变的属性*/
+  background-color: rgb(147, 210, 253);
+  color: rgb(76, 66, 136);
+  cursor: pointer;
 }
 
 .card .counter {

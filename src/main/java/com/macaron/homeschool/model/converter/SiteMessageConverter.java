@@ -24,6 +24,8 @@ public interface SiteMessageConverter {
 
     SiteMessage siteMessageDTOToSiteMessage(SiteMessageDTO siteMessageDTO);
 
+    SiteMessageVO siteMessageToSiteMessageVO(SiteMessage siteMessage);
+
     BasePageQuery siteMessageQueryDTOToBasePageQuery(SiteMessageQueryDTO siteMessageQueryDTO);
 
     SiteMessageQueryVO basePageResultToSiteMessageQueryVO(BasePageResult<SiteMessageVO> basePageResult);

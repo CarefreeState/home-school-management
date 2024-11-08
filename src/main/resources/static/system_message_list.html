@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/list.css" />
+    <link rel="stylesheet" href="./css/pursue.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="./img/logo.png" type="image/x-icon" />
+    <title>系统消息</title>
+  </head>
+  <body>
+    <div class="navigation">
+      <img src="./img/logo.png" />
+      <div class="title">站内信</div>
+      <div class="space"></div>
+    </div>
+    <div class="container">
+      <div class="container-right" style="width: 100%">
+        <div class="article" style="height: 90%">
+          <div id="a"></div>
+        </div>
+        <div class="blog-pagnation-wrapper">
+          <button class="blog-pagnation-item" onclick="tofirst()">首页</button>
+          <button class="blog-pagnation-item" onclick="toPrev()">上一页</button>
+          <button class="blog-pagnation-item" onclick="toNext()">下一页</button>
+          <button class="blog-pagnation-item" onclick="toLast()">末页</button>
+          <div class="row">
+            <label for="current">当前页码</label>
+            <input type="text" id="current" name="current"/>
+            <label for="current">共 <span id="pages"></span> 页</label>
+          </div>
+          <div class="row">
+            <label for="pageSize">页内条数</label>
+            <input type="text" id="pageSize" name="pageSize" />
+            <label for="pageSize">共 <span id="total"></span> 条</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 导入JS -->
+    <script src="./dist/js/jquery-3.6.3.js"></script>
+    <script src="./dist/js/jquery.cookie.js"></script>
+    <script src="./dist/js/jquery.toast.js"></script>
+    <script src="./js/urlHandler.js"></script>
+    <script src="./js/redirect.js"></script>
+    <script src="./js/token.js"></script>
+    <script src="./js/request.js"></script>
+    <script>
+
+      jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
+        if(data.userType === 1) {
+          jQuery(".navigation").append('<a href="./system_message_release.html">发布系统消息</a>');
+          jQuery(".navigation").append('<a href="./class_adudit.html">班级审核</a>');
+        } else {
+          jQuery(".navigation").append('<a href="./my_class_list.html">我的班级</a>');
+          jQuery(".navigation").append('<a href="./class_list.html">班级列表</a>');
+          jQuery(".navigation").append('<a href="./class_message_list.html">班级消息</a>');
+          jQuery(".navigation").append('<a href="./site_message_list.html">站内信</a>');
+        }
+        jQuery(".navigation").append('<a href="./login.html">登录</a>');
+      });
+
+      function getMinhIndex(arr, val) {
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] === val) {
+            return i;
+          }
+        }
+      }
+
+      function waterFall(boxes) {
+        // 将a下的全部box取出来
+        var oParent = jQuery("#a");
+        // 计算显示的列数（页面的宽/box的宽）
+        var oBoxWeight = boxes[0].outerWidth(); // console.log(oBoxWeight);
+        //333 + 内边距 10 * 2 + 边框 1 * 2 + （填充）15 == 370
+        var cols = Math.floor(jQuery("#a").width() / oBoxWeight);
+        // 设置a的宽度
+        oParent.css("width", cols * oBoxWeight + "px");
+        oParent.css("margin", "0 auto");
+
+        // 存放第该列（位置正确摆放的多个div高度）的高度的数组
+        // 第一次，则是第一行每个div的高度
+        var hArr = [];
+        for (var i = 0; i < boxes.length; i++) {
+          if (i < cols) {
+            hArr.push(boxes[i].outerHeight());
+          } else {
+            var minH = Math.min.apply(null, hArr); //top
+            var index = getMinhIndex(hArr, minH);
+            boxes[i].attr(
+              "style",
+              "position: absolute; top: " +
+                minH +
+                "px; left: " +
+                oBoxWeight * system_message_list +
+                "px;"
+            );
+            //处理盒子重叠
+            hArr[system_message_list] += boxes[i].outerHeight();
+          }
+        }
+        // left -> 左边三个div的宽，top-> 最小高
+      }
+
+      function buildBox(createTime, title, messageId) {
+        var result = "<br/><h2>" + title + "</h2>";
+        var aB = jQuery("<div></div>");
+        aB.attr("class", "B");
+        aB.append(result);
+        var aTleft = jQuery("<div></div>");
+        aTleft.attr("class", "Tleft");
+        var aTright = jQuery("<div></div>");
+        aTright.attr("class", "Tright");
+        aTright.append("<h4>" + createTime + "</h4>");
+        var aT = jQuery("<div></div>");
+        aT.attr("class", "T");
+        aT.append(aTleft);
+        aT.append(aTright);
+        var aPic = jQuery("<div></div>");
+        aPic.attr("class", "pic");
+        aPic.append(aT);
+        aPic.append(aB);
+        var aBox = jQuery(
+          "<a href='./system_message_detail.html?messageId=" +
+            messageId +
+            "'></a>"
+        );
+        aBox.attr("class", "box");
+        aPic.appendTo(aBox);
+        aBox.appendTo(jQuery("#a"));
+        return aBox;
+      }
+
+      function querySystemMessage() {
+        jQuery("#a").empty();
+        jsonRequestWithToken(
+          "/api/v1/message/system/query",
+          "POST",
+          {
+            current: jQuery("#current").val(),
+            pageSize: jQuery("#pageSize").val(),
+          },
+          function (data) {
+            jQuery("#current").val(data.current);
+            jQuery("#pages").html(data.pages);
+            jQuery("#pageSize").val(data.pageSize);
+            jQuery("#total").html(data.total);
+            var boxArray = [];
+            var resultList = data.list;
+            for (i = 0; i < resultList.length; i++) {
+              var item = resultList[i];
+              boxArray.push(buildBox(item.createTime, item.title, item.id));
+            }
+            waterFall(boxArray);
+          }
+        );
+      }
+      querySystemMessage();
+
+      jQuery("#current").blur(querySystemMessage);
+      jQuery("#pageSize").blur(querySystemMessage);
+
+      function tofirst() {
+        jQuery("#current").val(1);
+        querySystemMessage();
+      }
+      function toLast() {
+        jQuery("#current").val(jQuery("#pages").html());
+        querySystemMessage();
+      }
+      function toPrev() {
+        jQuery("#current").val(Number(jQuery("#current").val()) - 1);
+        querySystemMessage();
+      }
+      function toNext() {
+        jQuery("#current").val(Number(jQuery("#current").val()) + 1);
+        querySystemMessage();
+      }
+    </script>
+  </body>
+</html>

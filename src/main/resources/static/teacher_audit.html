@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>审核教师</title>
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/list.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="./img/logo.png" type="image/x-icon" />
+</head>
+<body>
+<div class="navigation">
+    <img src="./img/logo.png" />
+    <div class="title">审核教师</div>
+    <div class="space"></div>
+    <a href="./system_message_list.html">系统消息</a>
+    <a href="./system_message_release.html">发布系统消息</a>
+    <a href="./login.html">登录</a>
+</div>
+
+<!-- 页面主体 -->
+<div class="container">
+    <div class="container-left">
+        <div class="card" style="height: 150px">
+            <br />
+            <div class="counter">
+                <span class="h">「当前用户（
+                    <span id="userType" class="h"></span>
+                ）」</span>
+            </div>
+            <div class="counter">
+                <span class="h">「用户名」</span>
+                <span class="h">「昵称」</span>
+            </div>
+            <div class="counter">
+                <span id="username" class="h">root</span>
+                <span id="nickname" class="h">root</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-right">
+        <div class="article">
+        </div>
+    </div>
+</div>
+
+<script src="./dist/js/jquery-3.6.3.js"></script>
+<script src="./dist/js/jquery.cookie.js"></script>
+<script src="./dist/js/jquery.toast.js"></script>
+<script src="./js/urlHandler.js"></script>
+<script src="./js/redirect.js"></script>
+<script src="./js/token.js"></script>
+<script src="./js/request.js"></script>
+<script src="./js/userType.js"></script>
+<script src="./js/auditStatus.js"></script>
+
+<script>
+    jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
+        jQuery("#username").html(data.username);
+        jQuery("#nickname").html(data.nickname);
+        jQuery("#userType").html(getType(data.userType));
+    });
+    jsonRequestWithToken("/api/v1/user/list/teacher", "GET", null, function (data) {
+        for (var item of data) {
+            var art = '<div class="blog"><div class="title">' + item.username + "（" + getType(item.userType) + "）" + "</div>";
+            art += '<div class="date">' +  item.nickname + "（" + getAuditStatus(item.auditStatus) + "）" + "</div>";
+            art += '<div class="thing">';
+            art += '<span onclick="audit(' + item.id + ')">审核</span>';
+            art += "</div></div>";
+            jQuery(".article").append(jQuery(art));
+        }
+    })
+
+    function audit(teacherId) {
+        var status = confirm("是否审核通过") ? 1 : 2;
+        jsonRequestWithToken("/api/v1/user/audit/user", "PUT", {
+            userId: teacherId,
+            auditStatus: status,
+        }, function () {
+            refresh();
+        })
+    }
+
+</script>
+</body>
+</html>

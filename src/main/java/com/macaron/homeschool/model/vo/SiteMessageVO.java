@@ -16,9 +16,9 @@ public class SiteMessageVO {
 
     private Long id;
 
-    private UserInfoVO senderVO;
+    private UserVO sender;
 
-    private UserInfoVO recipientVO;
+    private UserVO recipient;
 
     private String title;
 

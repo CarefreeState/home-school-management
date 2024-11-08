@@ -9,6 +9,7 @@ import com.macaron.homeschool.model.converter.SchoolClassConverter;
 import com.macaron.homeschool.model.dao.mapper.SchoolClassMapper;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.entity.SchoolClass;
+import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
 import com.macaron.homeschool.model.vo.SchoolClassUserVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 import com.macaron.homeschool.redis.lock.RedisLock;
@@ -122,7 +123,7 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
             }
             // 不必加入自己创建的班级
             if(dbSchoolClass.getCreatorId().equals(userId)) {
-                throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+                throw new GlobalServiceException("不必加入自己创建的班级", GlobalServiceStatusCode.USER_NO_PERMISSION);
             }
             // 若未加入则加入
             classUserLinkService.getClassUserLink(classId, userId).ifPresentOrElse(ct -> {
@@ -134,7 +135,7 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
     }
 
     @Override
-    public List<SchoolClassUserVO> querySchoolClassUserList(Long classId) {
+    public SchoolClassDetailVO querySchoolClassUserList(Long classId) {
         return schoolClassMapper.querySchoolClassUserList(classId);
     }
 

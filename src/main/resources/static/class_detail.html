@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>班级详情</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/list.css" />
+    <link rel="stylesheet" href="./css/details.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="./img/logo.png" type="image/x-icon" />
+</head>
+<body>
+<div class="navigation">
+    <img src="./img/logo.png" />
+    <div class="title">班级详情</div>
+    <div class="space"></div>
+    <a href="./my_class_list.html">我的班级</a>
+    <a href="./class_list.html">班级列表</a>
+    <a href="./class_message_list.html">班级消息</a>
+    <a href="./site_message_list.html">站内信</a>
+    <a href="./system_message_list.html">系统消息</a>
+    <a href="./login.html">登录</a>
+</div>
+
+<!-- 页面主体 -->
+<div class="container">
+    <div class="container-left">
+        <div class="card" style="height: 350px">
+            <br />
+            <div class="counter">
+                <span class="h">「班级」</span>
+                <span class="h">「状态」</span>
+            </div>
+            <div class="counter">
+                <span id="className" class="h"></span>
+                <span id="classAuditStatus" class="h"></span>
+            </div>
+            <a id="sendClass" href="#">发布班级通知</a>
+            <div class="counter">
+                <span class="h">「创建者（
+                    <span id="userType" class="h"></span>
+                ）」</span>
+            </div>
+            <div class="counter">
+                <span class="h">「用户名」</span>
+                <span class="h">「昵称」</span>
+            </div>
+            <div class="counter">
+                <span id="username" class="h"></span>
+                <span id="nickname" class="h"></span>
+            </div>
+            <a id="sendSite" href="#">发送站内信</a>
+        </div>
+    </div>
+
+    <div class="container-right">
+        <div class="article">
+        </div>
+    </div>
+</div>
+
+<script src="./dist/js/jquery-3.6.3.js"></script>
+<script src="./dist/js/jquery.cookie.js"></script>
+<script src="./dist/js/jquery.toast.js"></script>
+<script src="./js/urlHandler.js"></script>
+<script src="./js/redirect.js"></script>
+<script src="./js/token.js"></script>
+<script src="./js/request.js"></script>
+<script src="./js/userType.js"></script>
+<script src="./js/auditStatus.js"></script>
+
+<script>
+
+    var classId = getParamValue("classId");
+    jsonRequestWithToken("/api/v1/class/query/users/" + classId, "GET", null, function (data) {
+        jQuery("#sendClass").attr("href", "./class_message_release.html?classId=" + data.id);
+        jQuery("#className").html(data.className);
+        jQuery("#classAuditStatus").html(getAuditStatus(data.auditStatus));
+        var creator = data.creator;
+        jQuery("#username").html(creator.username);
+        jQuery("#nickname").html(creator.nickname);
+        jQuery("#userType").html(getType(creator.userType));
+        jQuery("#sendSite").attr("href", "./site_message_release.html?classId=" + classId + "&recipientId=" + creator.id);
+        for (var item of data.userList) {
+            var art = '<div class="blog"><div class="title">' + item.userVO.username + "（" + getAuditStatus(item.auditStatus) + "）" + "</div>";
+            art += '<div class="date">' +  item.userVO.nickname + "，（" + getType(item.userVO.userType) + "）</div>";
+            art += '<div class="thing">';
+            art += '<span onclick="audit(' + item.userVO.id + ')">审核</span>';
+            art += '<a href="./site_message_release.html?classId=' + classId + '&recipientId=' + item.userVO.id + '">发送站内信</a>';
+            art += "</div></div>";
+            jQuery(".article").append(jQuery(art));
+        }
+    })
+
+    function audit(userId) {
+        var status = confirm("是否审核通过") ? 1 : 2;
+        jsonRequestWithToken("/api/v1/class/audit/user", "PUT", {
+            classId: getParamValue("classId"),
+            userId: userId,
+            auditStatus: status,
+        }, function () {
+            refresh();
+        })
+    }
+
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@
 }
 .dialog {
   width: 650px;
-  height: 500px;
+  height: 275px;
 
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
@@ -38,7 +38,7 @@
 }
 .row label {
   font-size: 15px;
-  width: 60px;
+  width: 85px;
   font-weight: 900;
 }
 #fileImage {
@@ -84,16 +84,25 @@
   width: 500px;
   height: 45px;
   font-size: 23px;
-  text-indent: 10px;
+  text-indent: 5px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.7);
   border: rgba(251, 114, 153, 0.5) 2px solid;
 }
-#git {
+#nickname {
   width: 500px;
   height: 45px;
   font-size: 23px;
-  text-indent: 10px;
+  text-indent: 5px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: rgba(251, 114, 153, 0.5) 2px solid;
+}
+#userType {
+  width: 500px;
+  height: 45px;
+  font-size: 23px;
+  text-indent: 5px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.7);
   border: rgba(251, 114, 153, 0.5) 2px solid;
@@ -102,16 +111,7 @@
   width: 500px;
   height: 45px;
   font-size: 23px;
-  text-indent: 10px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: rgba(251, 114, 153, 0.5) 2px solid;
-}
-#judge_password {
-  width: 500px;
-  height: 45px;
-  font-size: 23px;
-  text-indent: 10px;
+  text-indent: 5px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.7);
   border: rgba(251, 114, 153, 0.5) 2px solid;

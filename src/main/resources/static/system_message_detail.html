@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>系统消息详情</title>
+    <link rel="stylesheet" href="./editor.md/css/editormd.preview.min.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/details.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="./img/logo.png" type="image/x-icon" />
+</head>
+<body>
+<div class="navigation">
+    <img src="./img/logo.png" />
+    <div class="title">系统消息详情</div>
+    <div class="space"></div>
+</div>
+
+<div class="container">
+    <div class="container-left">
+        <div class="card">
+            <br />
+            <h3></h3>
+            <br />
+            <div class="counter">
+                <span class="h">「发布者（
+                    <span id="userType" class="h"></span>
+                ）」</span>
+            </div>
+            <div class="counter">
+                <span class="h">「用户名」</span>
+                <span class="h">「昵称」</span>
+            </div>
+            <div class="counter">
+                <span id="username" class="h"></span>
+                <span id="nickname" class="h"></span>
+            </div>
+            <div class="del" onclick="del()">删除系统消息</div>
+        </div>
+    </div>
+
+
+    <div class="container-right">
+        <div class="article">
+            <h3></h3>
+            <div class="date"></div>
+            <div id="pc" style="opacity: 80%"></div>
+        </div>
+    </div>
+</div>
+<script src="./dist/js/jquery-3.6.3.js"></script>
+<script src="./dist/js/jquery.cookie.js"></script>
+<script src="./dist/js/jquery.toast.js"></script>
+<script src="./js/urlHandler.js"></script>
+<script src="./js/redirect.js"></script>
+<script src="./js/token.js"></script>
+<script src="./js/request.js"></script>
+<script src="./js/userType.js"></script>
+<script src="./editor.md/editormd.js"></script>
+<script src="./editor.md/lib/marked.min.js"></script>
+<script src="./editor.md/lib/prettify.min.js"></script>
+<script>
+
+    jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
+        if(data.userType === 1) {
+            jQuery(".navigation").append('<a href="./class_adudit.html">班级审核</a>');
+        } else {
+            jQuery(".navigation").append('<a href="./my_class_list.html">我的班级</a>');
+            jQuery(".navigation").append('<a href="./class_list.html">班级列表</a>');
+            jQuery(".navigation").append('<a href="./class_message_list.html">班级消息</a>');
+            jQuery(".navigation").append('<a href="./site_message_list.html">站内信</a>');
+        }
+        jQuery(".navigation").append('<a href="./system_message_list.html">系统消息</a>');
+        jQuery(".navigation").append('<a href="./login.html">登录</a>');
+    });
+
+
+    jsonRequestWithToken("/api/v1/message/system/detail/" + Number(getParamValue("messageId")), "GET", null, function (data) {
+        jQuery("#username").html(data.userInfoVO.username);
+        jQuery("#nickname").html(data.userInfoVO.nickname);
+        jQuery("#userType").html(getType(data.userInfoVO.userType));
+        jQuery(".article h3").html(data.title);
+        jQuery(".article .date").html(data.createTime);
+        editormd.markdownToHTML("pc", {
+            markdown: data.content,
+        });
+    });
+
+    function del() {
+        if (!confirm("确认删除吗？")) {
+            return false;
+        }
+        jsonRequestWithToken("/api/v1/message/system/remove/" + Number(getParamValue("messageId")), "DELETE", null, function () {
+            jQuery.toast({
+                heading: "成功",
+                text: "删除成功",
+                icon: "success",
+                allowToastClose: true,
+            });
+            toSystemMessageList();
+        });
+    }
+
+</script>
+</body>
+</html>

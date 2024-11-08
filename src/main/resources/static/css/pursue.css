@@ -1,0 +1,125 @@
+.article h2 {
+  color: rgba(251, 114, 153, 0.8);
+}
+
+#a {
+  height: calc(100% - 66.67px);
+  width: 100%;
+
+  /* overflow: auto; */
+  /* 内容溢出，滚动条放入这里 */
+  position: relative;
+}
+
+.card h1 {
+  font-size: 50px;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+#c1 {
+  width: 120px;
+  height: 19px;
+  font-size: 12px;
+  text-indent: 4px;
+  border-radius: 4px;
+  font-weight: 900;
+  color: rgba(251, 114, 153, 0.7);
+}
+#c2 {
+  width: 120px;
+  height: 19px;
+  font-size: 12px;
+  text-indent: 4px;
+  border-radius: 4px;
+  font-weight: 900;
+  color: rgba(251, 114, 153, 0.7);
+}
+#c3 {
+  width: 120px;
+  height: 19px;
+  font-size: 12px;
+  text-indent: 4px;
+  font-weight: 900;
+  border-radius: 4px;
+  font-weight: 900;
+  color: rgba(251, 114, 153, 0.7);
+}
+.print {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.s #go {
+  width: 150px;
+  height: 25px;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  font-weight: 900;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  transition: all 0.618s;
+}
+#go:hover {
+  background-color: rgba(251, 114, 153, 0.7);
+}
+
+.box {
+  /* 用padding，而不是margin，因为我们计算的时候，我们不希望算上外边距（盒子大小，js获得高度的时候还得加上margin，复杂多了） */
+  padding: 15px 0 0 15px;
+  height: auto;
+
+  /* 浮动属性 */
+  float: left;
+  text-decoration: none;
+}
+
+.pic {
+  /* 自动换行 */
+  background-color: rgb(255, 255, 255);
+  width: 150px;
+  height: auto;
+  /* 边距 */
+  padding: 10px;
+
+  border-radius: 5px;
+  /* 阴影 */
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+.pic .T {
+  width: 150px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.Tleft {
+  display: none;
+  width: 30px;
+  height: 30px;
+  background-image: url(https://img1.baidu.com/it/u=4205447136,2730860147&fm=253&fmt=auto&app=138&f=JPEG?w=300&h=300);
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 15px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+.Tright {
+  width: 110px;
+  height: 30px;
+}
+.Tright h4 {
+  line-height: 15px;
+  font-size: 15px;
+  color: rgb(128, 128, 128);
+}
+.B {
+  width: 150px;
+  height: auto;
+  word-wrap: break-word;
+  padding-right: 10px;
+  padding-top: 5px;
+}

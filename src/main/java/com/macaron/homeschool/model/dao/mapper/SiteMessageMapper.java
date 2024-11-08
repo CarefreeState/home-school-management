@@ -6,6 +6,8 @@ import com.macaron.homeschool.model.entity.SiteMessage;
 import com.macaron.homeschool.model.vo.SiteMessageVO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
 * @author 马拉圈
 * @description 针对表【site_message(站内信表)】的数据库操作Mapper
@@ -15,6 +17,8 @@ import org.apache.ibatis.annotations.Param;
 public interface SiteMessageMapper extends BaseMapper<SiteMessage> {
 
     IPage<SiteMessageVO> querySiteMessageList(IPage<SiteMessageVO> page, @Param("userId") Long userId, @Param("classId") Long classId, @Param("oppositeId") Long oppositeId);
+
+    List<SiteMessageVO> querySiteMessageListByUserId(@Param("userId") Long userId, @Param("classId") Long classId);
 }
 
 

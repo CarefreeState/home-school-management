@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>站内信详情</title>
+    <link rel="stylesheet" href="./editor.md/css/editormd.preview.min.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/details.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="./img/logo.png" type="image/x-icon" />
+</head>
+<body>
+<div class="navigation">
+    <img src="./img/logo.png" />
+    <div class="title">站内信详情</div>
+    <div class="space"></div>
+    <a href="./my_class_list.html">我的班级</a>
+    <a href="./class_list.html">班级列表</a>
+    <a href="./class_message_list.html">班级消息</a>
+    <a href="./site_message_list.html">站内信</a>
+    <a href="./system_message_list.html">系统消息</a>
+    <a href="./login.html">登录</a>
+</div>
+
+<div class="container">
+    <div class="container-left">
+        <div class="card" style="height: 350px">
+            <br />
+            <h3></h3>
+            <br />
+            <div class="counter">
+                <span class="h">「发送者（
+                    <span id="userType1" class="h"></span>
+                ）」</span>
+            </div>
+            <div class="counter">
+                <span class="h">「用户名」</span>
+                <span class="h">「昵称」</span>
+            </div>
+            <div class="counter">
+                <span id="username1" class="h"></span>
+                <span id="nickname1" class="h"></span>
+            </div>
+
+            <div class="counter">
+                <span class="h">「接收者（
+                    <span id="userType2" class="h"></span>
+                ）」</span>
+            </div>
+            <div class="counter">
+                <span class="h">「用户名」</span>
+                <span class="h">「昵称」</span>
+            </div>
+            <div class="counter">
+                <span id="username2" class="h"></span>
+                <span id="nickname2" class="h"></span>
+            </div>
+            <div class="del" onclick="del()">删除站内信</div>
+        </div>
+    </div>
+
+
+    <div class="container-right">
+        <div class="article">
+            <h3></h3>
+            <div class="date"></div>
+            <div id="pc" style="opacity: 80%"></div>
+        </div>
+    </div>
+</div>
+<script src="./dist/js/jquery-3.6.3.js"></script>
+<script src="./dist/js/jquery.cookie.js"></script>
+<script src="./dist/js/jquery.toast.js"></script>
+<script src="./js/urlHandler.js"></script>
+<script src="./js/redirect.js"></script>
+<script src="./js/token.js"></script>
+<script src="./js/request.js"></script>
+<script src="./js/userType.js"></script>
+<script src="./editor.md/editormd.js"></script>
+<script src="./editor.md/lib/marked.min.js"></script>
+<script src="./editor.md/lib/prettify.min.js"></script>
+<script>
+
+    jsonRequestWithToken("/api/v1/message/site/detail/" + Number(getParamValue("messageId")), "GET", null, function (data) {
+        jQuery("#username1").html(data.sender.username);
+        jQuery("#nickname1").html(data.sender.nickname);
+        jQuery("#userType1").html(getType(data.sender.userType));
+        jQuery("#username2").html(data.recipient.username);
+        jQuery("#nickname2").html(data.recipient.nickname);
+        jQuery("#userType2").html(getType(data.recipient.userType));
+        jQuery(".article h3").html(data.title);
+        jQuery(".article .date").html(data.createTime);
+        editormd.markdownToHTML("pc", {
+            markdown: data.content,
+        });
+    });
+
+    function del() {
+        if (!confirm("确认删除吗？")) {
+            return false;
+        }
+        jsonRequestWithToken("/api/v1/message/site/remove/" + Number(getParamValue("messageId")), "DELETE", null, function () {
+            jQuery.toast({
+                heading: "成功",
+                text: "删除成功",
+                icon: "success",
+                allowToastClose: true,
+            });
+            toSiteMessageList();
+        });
+    }
+
+</script>
+</body>
+</html>

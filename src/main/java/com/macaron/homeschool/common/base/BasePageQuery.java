@@ -26,9 +26,9 @@ import static com.macaron.homeschool.common.constants.MyBatisPageConstants.*;
 @Setter
 public class BasePageQuery {
 
-    private Integer current;
+    private Long current;
 
-    private Integer pageSize;
+    private Long pageSize;
 
     private String sortBy;
 

@@ -9,9 +9,9 @@ package com.macaron.homeschool.common.constants;
  */
 public interface MyBatisPageConstants {
 
-    Integer DEFAULT_CURRENT = 1;
+    Long DEFAULT_CURRENT = 1L;
 
-    Integer DEFAULT_PAGE_SIZE = 10;
+    Long DEFAULT_PAGE_SIZE = 20L;
 
     String DEFAULT_SORT_BY = "create_time";
 

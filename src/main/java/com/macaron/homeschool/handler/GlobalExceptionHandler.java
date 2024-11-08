@@ -61,12 +61,6 @@ public class GlobalExceptionHandler {
         String message = "数据访问与交互异常";
         return SystemJsonResponse.CUSTOMIZE_MSG_ERROR(SYSTEM_SERVICE_ERROR, message);
     }
-    @ExceptionHandler({JwtException.class})
-    public SystemJsonResponse<?> handleJwtException(JwtException e, HttpServletRequest request) {
-        logError(request, e);
-        String message = "访问令牌异常";
-        return SystemJsonResponse.CUSTOMIZE_MSG_ERROR(SYSTEM_SERVICE_ERROR, message);
-    }
 
     /**
      * 自定义验证异常

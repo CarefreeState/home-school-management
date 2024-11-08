@@ -7,18 +7,23 @@ import com.macaron.homeschool.common.base.BasePageResult;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.converter.SiteMessageConverter;
+import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.SiteMessageMapper;
 import com.macaron.homeschool.model.dto.SiteMessageDTO;
 import com.macaron.homeschool.model.dto.SiteMessageQueryDTO;
+import com.macaron.homeschool.model.dto.SiteOppositeQueryDTO;
 import com.macaron.homeschool.model.entity.SiteMessage;
 import com.macaron.homeschool.model.vo.SiteMessageQueryVO;
 import com.macaron.homeschool.model.vo.SiteMessageVO;
+import com.macaron.homeschool.model.vo.UserVO;
 import com.macaron.homeschool.service.SchoolClassService;
 import com.macaron.homeschool.service.SiteMessageService;
+import com.macaron.homeschool.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,6 +41,8 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
     private final SiteMessageMapper siteMessageMapper;
 
     private final SchoolClassService schoolClassService;
+    
+    private final UserService userService;
 
     @Override
     public Optional<SiteMessage> getSiteMessage(Long messageId) {
@@ -87,9 +94,41 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
     }
 
     @Override
+    public List<UserVO> queryOppositeList(Long userId, SiteOppositeQueryDTO siteOppositeQueryDTO) {
+        Long classId = Optional.ofNullable(siteOppositeQueryDTO).map(SiteOppositeQueryDTO::getClassId).orElse(null);
+        // 如果 classId 不为 null，userId 必须是该班级的
+        if(Objects.nonNull(classId)) {
+            schoolClassService.checkSchoolClassApproved(classId);
+            schoolClassService.checkPartnerOfSchoolClass(classId, userId);
+        }
+        return siteMessageMapper.querySiteMessageListByUserId(userId, classId)
+                .stream()
+                .map(m -> m.getSender().getId().equals(userId) ? m.getRecipient() : m.getSender())
+                .distinct()
+                .toList();
+    }
+
+    @Override
     public SiteMessage checkAndGetSiteMessage(Long messageId) {
         return getSiteMessage(messageId).orElseThrow(() ->
                 new GlobalServiceException(GlobalServiceStatusCode.SITE_MESSAGE_NOT_EXISTS));
+    }
+
+    @Override
+    public SiteMessageVO querySiteMessageDetail(Long userId, Long messageId) {
+        SiteMessage siteMessage = checkAndGetSiteMessage(messageId);
+        Long senderId = siteMessage.getSenderId();
+        Long recipientId = siteMessage.getRecipientId();
+        // 只有双方中的一员能看到
+        if(!userId.equals(senderId) && !userId.equals(recipientId)) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+        }
+        SiteMessageVO siteMessageVO = SiteMessageConverter.INSTANCE.siteMessageToSiteMessageVO(siteMessage);
+        UserVO sender = UserConverter.INSTANCE.userToUserVO(userService.checkAndGetUserById(senderId));
+        UserVO recipient = UserConverter.INSTANCE.userToUserVO(userService.checkAndGetUserById(recipientId));
+        siteMessageVO.setSender(sender);
+        siteMessageVO.setRecipient(recipient);
+        return siteMessageVO;
     }
 }
 

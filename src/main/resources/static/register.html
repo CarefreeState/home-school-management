@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>注册</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/login.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="img/logo.png" type="image/x-icon" />
+</head>
+<body>
+<div class="navigation">
+    <img src="./img/logo.png" />
+    <div class="title">注册</div>
+    <div class="space"></div>
+    <a href="./system_message_list.html">系统消息</a>
+    <a href="./login.html">登录</a>
+</div>
+<!-- 登录页面 -->
+
+<div class="login-Container">
+    <div class="dialog" style="height: 350px">
+        <h3>注册</h3>
+        <br/>
+        <div class="row">
+            <label for="userType">用户类型</label>
+            <select id="userType" >
+                <option value="2">老师</option>
+                <option value="3" selected="selected">家长</option>
+            </select>
+        </div>
+        <div class="row">
+            <label for="username">用户名</label>
+            <input type="text" id="username" name="username" />
+        </div>
+        <div class="row">
+            <label for="nickname">昵称</label>
+            <input type="text" id="nickname" name="nickname" />
+        </div>
+        <div class="row">
+            <label for="password">密码</label>
+            <input type="password" id="password" />
+        </div>
+        <div class="r">
+            <input type="button" id="submit" value="注册" onclick="register()" />
+        </div>
+    </div>
+</div>
+
+<!-- 导入JS -->
+<script src="./dist/js/jquery-3.6.3.js"></script>
+<script src="./dist/js/jquery.cookie.js"></script>
+<script src="./dist/js/jquery.toast.js"></script>
+<script src="./js/urlHandler.js"></script>
+<script src="./js/redirect.js"></script>
+<script src="./js/token.js"></script>
+<script src="./js/request.js"></script>
+
+<script>
+    function register() {
+        var userType = jQuery("#userType");
+        var username = jQuery("#username");
+        var nickname = jQuery("#nickname");
+        var password = jQuery("#password");
+        jsonRequest("/api/v1/user/register", "POST", {
+            userType: userType.val(),
+            username: username.val(),
+            nickname: nickname.val(),
+            password: password.val(),
+        }, function () {
+            jQuery.toast({
+                heading: "成功",
+                text: "注册成功",
+                icon: "success",
+                allowToastClose: true,
+            });
+            toLogin();
+        });
+    }
+</script>
+</body>
+</html>

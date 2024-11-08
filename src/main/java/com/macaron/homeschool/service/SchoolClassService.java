@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.entity.SchoolClass;
+import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
 import com.macaron.homeschool.model.vo.SchoolClassUserVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 
@@ -34,7 +35,7 @@ public interface SchoolClassService extends IService<SchoolClass> {
 
     void attendSchoolClass(Long classId, Long userId);
 
-    List<SchoolClassUserVO> querySchoolClassUserList(Long classId);
+    SchoolClassDetailVO querySchoolClassUserList(Long classId);
 
     void auditClassUser(Long classId, Long userId, AuditStatus auditStatus);
 

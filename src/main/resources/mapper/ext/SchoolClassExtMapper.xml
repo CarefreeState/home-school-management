@@ -8,17 +8,28 @@
         <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
         <association property="userVO" columnPrefix="u_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
     </resultMap>
+    <resultMap id="SchoolClassDetailMap" type="com.macaron.homeschool.model.vo.SchoolClassDetailVO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
+        <association property="creator" columnPrefix="cr_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
+        <collection property="userList" columnPrefix="cu_" resultMap="SchoolClassUserMap"/>
+    </resultMap>
 
-    <select id="querySchoolClassUserList" parameterType="java.lang.Long" resultMap="SchoolClassUserMap">
+    <select id="querySchoolClassUserList" parameterType="java.lang.Long" resultMap="SchoolClassDetailMap">
         select
-            cu.audit_status, u.id u_id, u.username u_username, u.nickname u_nickname, u.phone_number u_phone_number,
-            u.user_type u_user_type, u.audit_status u_audit_status
+            c.id, c.class_name, c.audit_status,
+            cr.id cr_id, cr.username cr_username, cr.nickname cr_nickname, cr.phone_number cr_phone_number,
+            cr.user_type cr_user_type, cr.audit_status cr_audit_status,
+            cu.audit_status cu_audit_status, u.id cu_u_id, u.username cu_u_username, u.nickname cu_u_nickname, u.phone_number cu_u_phone_number,
+            u.user_type cu_u_user_type, u.audit_status cu_u_audit_status
         from school_class c
+             left join user cr on c.creator_id = cr.id and cr.is_deleted = 0 and c.is_deleted = 0
              left join class_user_link cu on c.id = cu.class_id and c.is_deleted = 0 and cu.is_deleted = 0
              left join user u on cu.user_id = u.id and cu.is_deleted = 0 and u.is_deleted = 0
         where
-            c.is_deleted = 0 and cu.id is not null and c.id = #{classId,jdbcType=BIGINT}
-        order by u_user_type
+            c.is_deleted = 0 and c.id = #{classId,jdbcType=BIGINT}
+        order by cu_u_user_type
     </select>
 
 </mapper>

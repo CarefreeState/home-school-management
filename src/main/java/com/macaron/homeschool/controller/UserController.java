@@ -21,6 +21,7 @@ import com.macaron.homeschool.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -60,6 +61,15 @@ public class UserController {
     @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
     public SystemJsonResponse<UserInfoVO> getUserInfo() {
         Long userId = BaseContext.getCurrentUser().getUserId();
+        User user = userService.checkAndGetUserById(userId);
+        UserInfoVO userInfoVO = UserConverter.INSTANCE.userToUserInfoVO(user);
+        return SystemJsonResponse.SYSTEM_SUCCESS(userInfoVO);
+    }
+
+    @GetMapping("/info/{userId}")
+    @Operation(summary = "读取指定用户信息")
+    @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
+    public SystemJsonResponse<UserInfoVO> getUserInfoByUserId(@PathVariable("userId") @NotNull(message = "用户 id 不能为空") Long userId) {
         User user = userService.checkAndGetUserById(userId);
         UserInfoVO userInfoVO = UserConverter.INSTANCE.userToUserInfoVO(user);
         return SystemJsonResponse.SYSTEM_SUCCESS(userInfoVO);

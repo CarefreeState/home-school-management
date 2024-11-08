@@ -25,6 +25,10 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class BasePageResult<T> {
 
+    private Long current;
+
+    private Long pageSize;
+
     private Long total;
 
     private Long pages;
@@ -39,7 +43,7 @@ public class BasePageResult<T> {
      * @return VO的分页对象
      */
     public static <V, P> BasePageResult<V> empty(IPage<P> p){
-        return new BasePageResult<>(p.getTotal(), p.getPages(), Collections.emptyList());
+        return new BasePageResult<>(p.getCurrent(), p.getSize(), p.getTotal(), p.getPages(), Collections.emptyList());
     }
 
     /**
@@ -49,7 +53,7 @@ public class BasePageResult<T> {
      * @return VO的分页对象
      */
     public static <P> BasePageResult<P> of(IPage<P> p) {
-        return new BasePageResult<>(p.getTotal(), p.getPages(), p.getRecords());
+        return new BasePageResult<>(p.getCurrent(), p.getSize(), p.getTotal(), p.getPages(), p.getRecords());
     }
 
     /**
@@ -70,7 +74,7 @@ public class BasePageResult<T> {
         // 2.数据转换
         List<V> vos = BeanUtil.copyToList(records, voClass);
         // 3.封装返回
-        return new BasePageResult<>(p.getTotal(), p.getPages(), vos);
+        return new BasePageResult<>(p.getCurrent(), p.getSize(), p.getTotal(), p.getPages(), vos);
     }
 
     /**
@@ -91,6 +95,6 @@ public class BasePageResult<T> {
         // 2.数据转换
         List<V> vos = records.stream().map(convertor).toList();
         // 3.封装返回
-        return new BasePageResult<>(p.getTotal(), p.getPages(), vos);
+        return new BasePageResult<>(p.getCurrent(), p.getSize(), p.getTotal(), p.getPages(), vos);
     }
 }

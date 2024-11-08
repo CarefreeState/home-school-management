@@ -3,9 +3,13 @@ package com.macaron.homeschool.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.model.dto.SiteMessageDTO;
 import com.macaron.homeschool.model.dto.SiteMessageQueryDTO;
+import com.macaron.homeschool.model.dto.SiteOppositeQueryDTO;
 import com.macaron.homeschool.model.entity.SiteMessage;
 import com.macaron.homeschool.model.vo.SiteMessageQueryVO;
+import com.macaron.homeschool.model.vo.SiteMessageVO;
+import com.macaron.homeschool.model.vo.UserVO;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,6 +27,10 @@ public interface SiteMessageService extends IService<SiteMessage> {
 
     SiteMessageQueryVO querySiteMessageList(Long userId, SiteMessageQueryDTO siteMessageQueryDTO);
 
+    List<UserVO> queryOppositeList(Long userId, SiteOppositeQueryDTO siteOppositeQueryDTO);
+
     SiteMessage checkAndGetSiteMessage(Long messageId);
+
+    SiteMessageVO querySiteMessageDetail(Long userId, Long messageId);
 
 }

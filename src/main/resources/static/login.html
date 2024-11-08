@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登录</title>
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/login.css" />
+    <link rel="stylesheet" href="./dist/css/jquery.toast.css" />
+    <link rel="icon" href="img/logo.png" type="image/x-icon" />
+</head>
+<body>
+<div class="navigation">
+    <img src="./img/logo.png" alt="登录" />
+    <div class="title">登录</div>
+    <div class="space"></div>
+    <a href="./system_message_list.html">系统消息</a>
+</div>
+<!-- 登录页面 -->
+
+<div class="login-Container">
+    <div class="dialog">
+        <h3>登录</h3>
+
+        <div class="row" style="margin-top: 30px">
+            <label for="username">用户名</label>
+            <input type="text" id="username" />
+        </div>
+        <div class="row">
+            <label for="password">密码</label>
+            <input type="password" id="password"/>
+        </div>
+        <div class="r" style="margin-top: 25px">
+            <input
+                    type="button"
+                    id="goreg"
+                    value="注册"
+                    onclick="location.href = './register.html'"
+            />
+            <input type="button" id="submit" value="登录" onclick="login()" />
+        </div>
+    </div>
+</div>
+
+<!-- 导入JS -->
+<script src="./dist/js/jquery-3.6.3.js"></script>
+<script src="./dist/js/jquery.cookie.js"></script>
+<script src="./dist/js/jquery.toast.js"></script>
+<script src="./js/urlHandler.js"></script>
+<script src="./js/redirect.js"></script>
+<script src="./js/token.js"></script>
+<script src="./js/request.js"></script>
+
+<script>
+    jQuery("#username").focus();
+    function login() {
+        var username = jQuery("#username");
+        var password = jQuery("#password");
+        jsonRequest("/api/v1/user/login", "POST", {
+            loginType: "password",
+            passwordParams: {
+                username: username.val(),
+                password: password.val(),
+            },
+        }, function (data) {
+            jQuery.toast({
+                heading: "成功",
+                text: "登录成功",
+                icon: "success",
+                allowToastClose: true,
+            });
+            setToken(data.token);
+            toSystemMessageList();
+        })
+    }
+</script>
+</body>
+</html>

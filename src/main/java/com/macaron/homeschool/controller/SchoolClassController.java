@@ -10,6 +10,7 @@ import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.dto.AuditClassDTO;
 import com.macaron.homeschool.model.dto.AuditClassUserDTO;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
+import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
 import com.macaron.homeschool.model.vo.SchoolClassUserVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 import com.macaron.homeschool.service.SchoolClassService;
@@ -122,12 +123,11 @@ public class SchoolClassController {
     @GetMapping("/query/users/{classId}")
     @Operation(summary = "查询班级内用户列表")
     @Intercept(permit = {UserType.TEACHER, UserType.GUARDIAN})
-    public SystemJsonResponse<List<SchoolClassUserVO>> querySchoolClassUserList(@PathVariable("classId") @NotNull(message = "班级 id 不能为空") Long classId) {
+    public SystemJsonResponse<SchoolClassDetailVO> querySchoolClassUserList(@PathVariable("classId") @NotNull(message = "班级 id 不能为空") Long classId) {
         Long userId = BaseContext.getCurrentUser().getUserId();
-        // 判断是不是审核通过的班级内的用户
         schoolClassService.checkPartnerOfSchoolClass(classId, userId);
-        List<SchoolClassUserVO> schoolClassUserVOList = schoolClassService.querySchoolClassUserList(classId);
-        return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassUserVOList);
+        SchoolClassDetailVO schoolClassDetailVO = schoolClassService.querySchoolClassUserList(classId);
+        return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassDetailVO);
     }
 
 }

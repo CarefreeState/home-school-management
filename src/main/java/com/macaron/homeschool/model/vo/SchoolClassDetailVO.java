@@ -1,18 +1,19 @@
 package com.macaron.homeschool.model.vo;
 
+import com.macaron.homeschool.common.enums.AuditStatus;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created With Intellij IDEA
  * Description:
  * User: 马拉圈
- * Date: 2024-11-06
- * Time: 16:43
+ * Date: 2024-11-07
+ * Time: 15:37
  */
 @Data
-public class SchoolClassVO {
+public class SchoolClassDetailVO {
 
     private Long id;
 
@@ -20,6 +21,7 @@ public class SchoolClassVO {
 
     private Integer auditStatus;
 
-    protected LocalDateTime createTime;
+    private UserVO creator;
 
+    private List<SchoolClassUserVO> userList;
 }
