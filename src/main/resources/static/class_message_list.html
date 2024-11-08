@@ -159,13 +159,24 @@
 
     function queryClassMessage() {
         jQuery("#a").empty();
+        var classId = jQuery("#class");
+        if(!classId.val()) {
+            jQuery.toast({
+                heading: "提醒",
+                text: "请选择班级",
+                icon: "warning",
+                allowToastClose: true,
+            });
+            classId.focus();
+            return false;
+        }
         jsonRequestWithToken(
             "/api/v1/message/class/query",
             "POST",
             {
                 current: jQuery("#current").val(),
                 pageSize: jQuery("#pageSize").val(),
-                classId: jQuery("#class").val(),
+                classId: classId.val(),
             },
             function (data) {
                 jQuery("#current").val(data.current);

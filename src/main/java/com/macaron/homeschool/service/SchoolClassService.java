@@ -43,6 +43,10 @@ public interface SchoolClassService extends IService<SchoolClass> {
 
     void checkCreatorOfSchoolClass(Long classId, Long userId);
 
+    boolean isCreatorOfSchoolClass(Long classId, Long userId);
+
     void checkPartnerOfSchoolClass(Long classId, Long userId);
+
+    boolean isPartnerOfSchoolClass(Long classId, Long userId);
 
 }

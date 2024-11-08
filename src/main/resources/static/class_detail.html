@@ -87,8 +87,8 @@
         jQuery("#userType").html(getType(creator.userType));
         jQuery("#sendSite").attr("href", "./site_message_release.html?classId=" + classId + "&recipientId=" + creator.id);
         for (var item of data.userList) {
-            var art = '<div class="blog"><div class="title">' + item.userVO.username + "（" + getAuditStatus(item.auditStatus) + "）" + "</div>";
-            art += '<div class="date">' +  item.userVO.nickname + "，（" + getType(item.userVO.userType) + "）</div>";
+            var art = '<div class="blog"><div class="title">' + item.userVO.nickname + "（" + getType(item.userVO.userType) + "）</div>";
+            art += '<div class="date">' + getAuditStatus(item.auditStatus) + "</div>";
             art += '<div class="thing">';
             art += '<span onclick="audit(' + item.userVO.id + ')">审核</span>';
             art += '<a href="./site_message_release.html?classId=' + classId + '&recipientId=' + item.userVO.id + '">发送站内信</a>';

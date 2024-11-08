@@ -12,8 +12,10 @@ import lombok.Data;
 @Data
 public class SchoolClassUserVO {
 
-    private UserVO userVO;
+    private Long id;
 
     private Integer auditStatus;
+
+    private UserVO userVO;
 
 }

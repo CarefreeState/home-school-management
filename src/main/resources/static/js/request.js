@@ -60,7 +60,7 @@ function jsonRequest(u, m, d, s) {
             //提示信息
             $.toast({
                 heading: "错误",
-                text: "访问出现问题 ",
+                text: "访问出现问题",
                 icon: "error",
                 allowToastClose: true,
             });

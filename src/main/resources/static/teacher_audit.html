@@ -68,8 +68,8 @@
     });
     jsonRequestWithToken("/api/v1/user/list/teacher", "GET", null, function (data) {
         for (var item of data) {
-            var art = '<div class="blog"><div class="title">' + item.username + "（" + getType(item.userType) + "）" + "</div>";
-            art += '<div class="date">' +  item.nickname + "（" + getAuditStatus(item.auditStatus) + "）" + "</div>";
+            var art = '<div class="blog"><div class="title">' + item.nickname + "（" + getType(item.userType) + "）" + "</div>";
+            art += '<div class="date">' + getAuditStatus(item.auditStatus) + "</div>";
             art += '<div class="thing">';
             art += '<span onclick="audit(' + item.id + ')">审核</span>';
             art += "</div></div>";

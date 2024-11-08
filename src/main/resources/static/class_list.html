@@ -83,8 +83,8 @@
     function attend(classId) {
         jsonRequestWithToken("/api/v1/class/attend/" + classId, "PUT", null, function () {
             jQuery.toast({
-                heading: "成功",
-                text: "加入成功",
+                heading: "提醒",
+                text: "申请加入班级成功",
                 icon: "success",
                 allowToastClose: true,
             });

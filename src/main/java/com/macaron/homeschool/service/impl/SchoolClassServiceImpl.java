@@ -152,20 +152,29 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
 
     @Override
     public void checkCreatorOfSchoolClass(Long classId, Long userId) {
-        Long creatorId = checkAndGetSchoolClass(classId).getCreatorId();
-        if(!creatorId.equals(userId)) {
-            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
+        if(!isCreatorOfSchoolClass(classId, userId)) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NOT_CLASS_CREATOR);
         }
     }
 
     @Override
+    public boolean isCreatorOfSchoolClass(Long classId, Long userId) {
+        return checkAndGetSchoolClass(classId).getCreatorId().equals(userId);
+    }
+
+    @Override
     public void checkPartnerOfSchoolClass(Long classId, Long userId) {
-        Boolean isPartner = classUserLinkService.getClassUserLink(classId, userId)
-                .map(cu -> AuditStatus.AUDIT_PASSED.equals(cu.getAuditStatus()))
-                .orElse(Boolean.FALSE);
-        if(Boolean.FALSE.equals(isPartner)) {
-            checkCreatorOfSchoolClass(classId, userId);
+        if(!isPartnerOfSchoolClass(classId, userId)) {
+            throw new GlobalServiceException(GlobalServiceStatusCode.USER_NOT_CLASS_PARTNER);
         }
+    }
+
+    @Override
+    public boolean isPartnerOfSchoolClass(Long classId, Long userId) {
+        return classUserLinkService.getClassUserLink(classId, userId)
+                .map(cu -> AuditStatus.AUDIT_PASSED.equals(cu.getAuditStatus()))
+                .orElse(Boolean.FALSE) || isCreatorOfSchoolClass(classId, userId);
+
     }
 }
 

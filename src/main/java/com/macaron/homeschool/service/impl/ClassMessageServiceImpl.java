@@ -2,7 +2,6 @@ package com.macaron.homeschool.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.macaron.homeschool.common.base.BasePageQuery;
 import com.macaron.homeschool.common.base.BasePageResult;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
