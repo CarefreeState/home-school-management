@@ -1,5 +1,6 @@
 package com.macaron.homeschool.model.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -16,6 +17,7 @@ public class ClassMessageQueryDTO {
 
     private Integer pageSize;
 
+    @NotNull(message = "班级 id 不能为空")
     private Long classId;
 
 }

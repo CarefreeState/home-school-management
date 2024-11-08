@@ -15,8 +15,8 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
+        <div id="title">系统消息详情</div>
     </div>
-    <div class="title">系统消息详情</div>
     <div class="space2" style="display: flex; justify-content: flex-end">
 
     </div>
@@ -69,7 +69,8 @@
 
     jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
         if(data.userType === 1) {
-            jQuery(".space2").append('<a href="./class_adudit.html">班级审核</a>');
+            jQuery(".space2").append('<a href="./teacher_audit.html">审核老师</a>');
+            jQuery(".space2").append('<a href="./class_audit.html">审核班级</a>');
         } else {
             jQuery(".space2").append('<a href="./my_class_list.html">我的班级</a>');
             jQuery(".space2").append('<a href="./class_list.html">班级列表</a>');

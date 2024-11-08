@@ -123,9 +123,13 @@ public class SchoolClassController {
     @Operation(summary = "查询班级内用户列表")
     @Intercept(permit = {UserType.TEACHER, UserType.GUARDIAN})
     public SystemJsonResponse<SchoolClassDetailVO> querySchoolClassUserList(@PathVariable("classId") @NotNull(message = "班级 id 不能为空") Long classId) {
-        Long userId = BaseContext.getCurrentUser().getUserId();
-        schoolClassService.checkPartnerOfSchoolClass(classId, userId);
         SchoolClassDetailVO schoolClassDetailVO = schoolClassService.querySchoolClassUserList(classId);
+        try {
+            schoolClassService.checkPartnerOfSchoolClass(classId, BaseContext.getCurrentUser().getUserId());
+        } catch (GlobalServiceException e) {
+            log.warn(e.getMessage());
+            schoolClassDetailVO.setUserList(null);
+        }
         return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassDetailVO);
     }
 

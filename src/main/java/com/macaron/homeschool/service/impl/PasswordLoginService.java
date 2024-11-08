@@ -39,7 +39,7 @@ public class PasswordLoginService implements LoginService {
         }
         // 获取数据库的用户数据
         User dbUser = userService.getUserByUsername(passwordParams.getUsername()).orElseThrow(() ->
-                new GlobalServiceException(GlobalServiceStatusCode.USER_ACCOUNT_NOT_EXIST));
+                new GlobalServiceException(GlobalServiceStatusCode.USER_USERNAME_PASSWORD_ERROR));
         // 判断是否可以登录
         checkCanLogin(dbUser);
         // 校验

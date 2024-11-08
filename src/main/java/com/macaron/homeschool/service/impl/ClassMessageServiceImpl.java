@@ -66,19 +66,11 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
     @Override
     public ClassMessageQueryVO queryClassMessageList(Long userId, ClassMessageQueryDTO classMessageQueryDTO) {
         // 解析分页参数获取 page
-        IPage<ClassMessage> page = null;
-        Long classId = null;
-        if(Objects.isNull(classMessageQueryDTO)) {
-            page = new BasePageQuery().toMpPage();
-        } else {
-            page = ClassMessageConverter.INSTANCE.classMessageQueryDTOToBasePageQuery(classMessageQueryDTO).toMpPage();
-            classId = classMessageQueryDTO.getClassId();
-        }
-        // 如果 classId 不为 null，userId 必须是该班级的
-        if(Objects.nonNull(classId)) {
-            schoolClassService.checkSchoolClassApproved(classId);
-            schoolClassService.checkPartnerOfSchoolClass(classId, userId);
-        }
+        IPage<ClassMessage> page = ClassMessageConverter.INSTANCE.classMessageQueryDTOToBasePageQuery(classMessageQueryDTO).toMpPage();
+        Long classId = classMessageQueryDTO.getClassId();
+        // 用户必须是该班级的
+        schoolClassService.checkSchoolClassApproved(classId);
+        schoolClassService.checkPartnerOfSchoolClass(classId, userId);
         // 分页
         IPage<ClassMessage> classMessageIPage = this.lambdaQuery()
                 .eq(Objects.nonNull(classId), ClassMessage::getClassId, classId)

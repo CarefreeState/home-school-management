@@ -15,12 +15,11 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
+        <div id="title">班级消息</div>
     </div>
-    <div class="title">班级消息</div>
     <div class="space2" style="display: flex; justify-content: flex-end">
         <a href="./my_class_list.html">我的班级</a>
         <a href="./class_list.html">班级列表</a>
-        <a href="./class_message_release.html">发布班级消息</a>
         <a href="./site_message_list.html">站内信</a>
         <a href="./system_message_list.html">系统消息</a>
         <a href="./login.html">登录</a>
@@ -138,10 +137,24 @@
     }
 
     jsonRequestWithToken("/api/v1/class/query/self", "GET", null, function (data) {
-        for (var item of data) {
-            var option = '<option value="' + item.id + '">' + item.className + '</option>'
-            jQuery("#class").append(jQuery(option));
+        if(data.length < 1) {
+            jQuery.toast({
+                heading: "提醒",
+                text: "尚未加入过班级",
+                icon: "info",
+                allowToastClose: true,
+            });
+            return false;
         }
+        for (i = 0; i < data.length; i++) {
+            var item = data[i];
+            if(i === 0) {
+                jQuery("#class").append(jQuery('<option value="' + item.id + '" selected="selected">' + item.className + '</option>'));
+            }else {
+                jQuery("#class").append(jQuery('<option value="' + item.id + '">' + item.className + '</option>'));
+            }
+        }
+        queryClassMessage();
     })
 
     function queryClassMessage() {
@@ -150,9 +163,9 @@
             "/api/v1/message/class/query",
             "POST",
             {
-                classId: jQuery("#class").val(),
                 current: jQuery("#current").val(),
                 pageSize: jQuery("#pageSize").val(),
+                classId: jQuery("#class").val(),
             },
             function (data) {
                 jQuery("#current").val(data.current);
@@ -170,7 +183,6 @@
         );
     }
 
-    queryClassMessage();
     jQuery("#class").change(queryClassMessage);
     jQuery("#current").blur(queryClassMessage);
     jQuery("#pageSize").blur(queryClassMessage);

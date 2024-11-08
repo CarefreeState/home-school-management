@@ -70,7 +70,7 @@ public class ClassMessageController {
     @PostMapping("/query")
     @Operation(summary = "查看班级通知列表")
     @Intercept(permit = {UserType.TEACHER, UserType.GUARDIAN})
-    public SystemJsonResponse<ClassMessageQueryVO> queryClassMessageList(@Valid @RequestBody(required = false) ClassMessageQueryDTO classMessageQueryDTO) {
+    public SystemJsonResponse<ClassMessageQueryVO> queryClassMessageList(@Valid @RequestBody ClassMessageQueryDTO classMessageQueryDTO) {
         Long userId = BaseContext.getCurrentUser().getUserId();
         ClassMessageQueryVO classMessageQueryVO = classMessageService.queryClassMessageList(userId, classMessageQueryDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS(classMessageQueryVO);

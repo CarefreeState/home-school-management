@@ -15,10 +15,9 @@
     <div class="navigation">
       <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
+        <div id="title">系统消息</div>
       </div>
-      <div class="title">系统消息</div>
       <div class="space2" style="display: flex; justify-content: flex-end">
-
       </div>
     </div>
     <div class="container">
@@ -57,7 +56,8 @@
       jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
         if(data.userType === 1) {
           jQuery(".space2").append('<a href="./system_message_release.html">发布系统消息</a>');
-          jQuery(".space2").append('<a href="./class_adudit.html">班级审核</a>');
+          jQuery(".space2").append('<a href="./teacher_audit.html">审核老师</a>');
+          jQuery(".space2").append('<a href="./class_audit.html">审核班级</a>');
         } else {
           jQuery(".space2").append('<a href="./my_class_list.html">我的班级</a>');
           jQuery(".space2").append('<a href="./class_list.html">班级列表</a>');
@@ -100,11 +100,11 @@
               "position: absolute; top: " +
                 minH +
                 "px; left: " +
-                oBoxWeight * system_message_list +
+                oBoxWeight * index +
                 "px;"
             );
             //处理盒子重叠
-            hArr[system_message_list] += boxes[i].outerHeight();
+            hArr[index] += boxes[i].outerHeight();
           }
         }
         // left -> 左边三个div的宽，top-> 最小高
