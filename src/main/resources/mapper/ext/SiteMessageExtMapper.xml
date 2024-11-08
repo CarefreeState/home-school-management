@@ -45,7 +45,7 @@
                 )
             )
         </where>
-        order by m.create_time
+        order by m.create_time asc
     </select>
 
     <select id="querySiteMessageListByUserId" resultMap="SiteMessageDetailMap">
@@ -65,7 +65,7 @@
             </if>
             and (s.id = #{userId,jdbcType=BIGINT} or r.id = #{userId,jdbcType=BIGINT})
         </where>
-        order by m.create_time
+        order by m.create_time asc
     </select>
 
 </mapper>

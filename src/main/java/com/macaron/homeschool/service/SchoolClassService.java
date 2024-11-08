@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.entity.SchoolClass;
+import com.macaron.homeschool.model.vo.SchoolClassAboutMeVO;
 import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
 * @author 马拉圈
@@ -30,11 +30,11 @@ public interface SchoolClassService extends IService<SchoolClass> {
 
     List<SchoolClassVO> querySchoolClassList(List<AuditStatus> auditStatuseList);
 
-    Set<SchoolClassVO> querySelfSchoolClassSet(Long userId);
-
     void attendSchoolClass(Long classId, Long userId);
 
     SchoolClassDetailVO querySchoolClassUserList(Long classId);
+
+    List<SchoolClassAboutMeVO> querySchoolClassAboutMeList( Long userId);
 
     void auditClassUser(Long classId, Long userId, AuditStatus auditStatus);
 

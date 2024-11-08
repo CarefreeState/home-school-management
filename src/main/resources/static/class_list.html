@@ -70,7 +70,7 @@
     });
     jsonRequestWithToken("/api/v1/class/query/normal", "GET", null, function (data) {
         for (var item of data) {
-            var art = '<div class="blog"><div class="title">' + item.className + "（" + getAuditStatus(item.auditStatus) + "）" + "</div>";
+            var art = '<div class="blog"><div class="title">' + item.className + "</div>";
             art += '<div class="date">' +  item.createTime + "</div>";
             art += '<div class="thing">';
             art += '<a href="/class_detail.html?classId=' + item.id + '">查看详情</a>';

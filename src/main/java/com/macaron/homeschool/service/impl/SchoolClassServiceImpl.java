@@ -9,6 +9,7 @@ import com.macaron.homeschool.model.converter.SchoolClassConverter;
 import com.macaron.homeschool.model.dao.mapper.SchoolClassMapper;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.entity.SchoolClass;
+import com.macaron.homeschool.model.vo.SchoolClassAboutMeVO;
 import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 import com.macaron.homeschool.redis.lock.RedisLock;
@@ -19,7 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
 * @author 马拉圈
@@ -97,22 +100,6 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
     }
 
     @Override
-    public Set<SchoolClassVO> querySelfSchoolClassSet(Long userId) {
-        List<SchoolClass> schoolClassList = this.lambdaQuery()
-                .eq(SchoolClass::getCreatorId, userId)
-                .list();
-        Set<SchoolClass> classSet = new LinkedHashSet<>(schoolClassList);
-        List<Long> classIdsByUserId = classUserLinkService.getClassIdsByUserId(userId);
-        if(!CollectionUtils.isEmpty(classIdsByUserId)) {
-            List<SchoolClass> classes = this.lambdaQuery()
-                    .in(SchoolClass::getId, classIdsByUserId)
-                    .list();
-            classSet.addAll(classes);
-        }
-        return SchoolClassConverter.INSTANCE.schoolClassSetToSchoolClassVOSet(classSet);
-    }
-
-    @Override
     public void attendSchoolClass(Long classId, Long userId) {
         redisLock.tryLockDoSomething(String.format(SchoolClassConstants.CLASS_TEACHER_ATTEND_LOCK, classId, userId), () -> {
             SchoolClass dbSchoolClass = checkAndGetSchoolClass(classId);
@@ -136,6 +123,11 @@ public class SchoolClassServiceImpl extends ServiceImpl<SchoolClassMapper, Schoo
     @Override
     public SchoolClassDetailVO querySchoolClassUserList(Long classId) {
         return schoolClassMapper.querySchoolClassUserList(classId);
+    }
+
+    @Override
+    public List<SchoolClassAboutMeVO> querySchoolClassAboutMeList(Long userId) {
+        return schoolClassMapper.querySchoolClassAboutMeList(userId);
     }
 
     @Override

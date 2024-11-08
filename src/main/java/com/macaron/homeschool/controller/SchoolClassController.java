@@ -7,14 +7,17 @@ import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
+import com.macaron.homeschool.common.util.HttpServletUtil;
 import com.macaron.homeschool.model.dto.AuditClassDTO;
 import com.macaron.homeschool.model.dto.AuditClassUserDTO;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
+import com.macaron.homeschool.model.vo.SchoolClassAboutMeVO;
 import com.macaron.homeschool.model.vo.SchoolClassDetailVO;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 import com.macaron.homeschool.service.SchoolClassService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created With Intellij IDEA
@@ -88,10 +91,10 @@ public class SchoolClassController {
     @GetMapping("/query/self")
     @Operation(summary = "查询自己有关的班级列表")
     @Intercept(permit = {UserType.TEACHER, UserType.GUARDIAN})
-    public SystemJsonResponse<Set<SchoolClassVO>> querySelfSchoolClassSet() {
+    public SystemJsonResponse<List<SchoolClassAboutMeVO>> querySelfSchoolClassSet() {
         Long userId = BaseContext.getCurrentUser().getUserId();
-        Set<SchoolClassVO> schoolClassVOSet = schoolClassService.querySelfSchoolClassSet(userId);
-        return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassVOSet);
+        List<SchoolClassAboutMeVO> schoolClassAboutMeVOList = schoolClassService.querySchoolClassAboutMeList(userId);
+        return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassAboutMeVOList);
     }
 
     @PutMapping("/attend/{classId}")
@@ -122,11 +125,13 @@ public class SchoolClassController {
     @GetMapping("/query/users/{classId}")
     @Operation(summary = "查询班级内用户列表")
     @Intercept(permit = {UserType.TEACHER, UserType.GUARDIAN})
-    public SystemJsonResponse<SchoolClassDetailVO> querySchoolClassUserList(@PathVariable("classId") @NotNull(message = "班级 id 不能为空") Long classId) {
+    public SystemJsonResponse<SchoolClassDetailVO> querySchoolClassUserList(@PathVariable("classId") @NotNull(message = "班级 id 不能为空") Long classId,
+                                                                            HttpServletResponse httpServletResponse) {
         SchoolClassDetailVO schoolClassDetailVO = schoolClassService.querySchoolClassUserList(classId);
         // 不是一员的话不能看到其他成员
         if(!schoolClassService.isPartnerOfSchoolClass(classId, BaseContext.getCurrentUser().getUserId())) {
-            schoolClassDetailVO.setUserList(null);
+            HttpServletUtil.warn(httpServletResponse, "当前用户还未成为班级中的一员");
+            schoolClassDetailVO.setUserList(new ArrayList<>());
         }
         return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassDetailVO);
     }

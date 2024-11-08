@@ -7,7 +7,6 @@ import com.macaron.homeschool.model.entity.ClassUserLink;
 import com.macaron.homeschool.service.ClassUserLinkService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,16 +24,6 @@ public class ClassUserLinkServiceImpl extends ServiceImpl<ClassUserLinkMapper, C
                 .eq(ClassUserLink::getClassId, classId)
                 .eq(ClassUserLink::getUserId, userId)
                 .oneOpt();
-    }
-
-    @Override
-    public List<Long> getClassIdsByUserId(Long userId) {
-        return this.lambdaQuery()
-                .eq(ClassUserLink::getUserId, userId)
-                .list()
-                .stream()
-                .map(ClassUserLink::getClassId)
-                .toList();
     }
 
     @Override

@@ -72,8 +72,12 @@
 
     jsonRequestWithToken("/api/v1/class/query/self", "GET", null, function (data) {
         for (var item of data) {
-            var art = '<div class="blog"><div class="title">' + item.className + "（" + getAuditStatus(item.auditStatus) + "）" + "</div>";
-            art += '<div class="date">' +  item.createTime + "</div>";
+            var art = '<div class="blog"><div class="title">' + item.className + "</div>";
+            if(item.isMine) {
+                art += '<div class="date">我创建的班级：' +  getAuditStatus(item.classAuditStatus) + "</div>";
+            }else {
+                art += '<div class="date">我加入的班级：' +  getAuditStatus(item.attendAuditStatus) + "</div>";
+            }
             art += '<div class="thing">';
             art += '<a href="/class_detail.html?classId=' + item.id + '">查看详情</a>';
             art += "</div></div>";

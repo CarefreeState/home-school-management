@@ -1,3 +1,15 @@
+
+function log(heading, icon, text) {
+    if(text) {
+        jQuery.toast({
+            heading: heading,
+            text: decodeURIComponent(text),
+            icon: icon,
+            allowToastClose: true,
+        });
+    }
+}
+
 function jsonRequestWithToken(u, m, d, s) {
     jQuery.ajax({
         url: u,
@@ -33,6 +45,9 @@ function jsonRequestWithToken(u, m, d, s) {
         },
         complete: function(xhr) {
             setToken(xhr.getResponseHeader("token"));
+            log("提示", "info", xhr.getResponseHeader("info"));
+            log("警告", "warning", xhr.getResponseHeader("warn"));
+            log("错误", "error", xhr.getResponseHeader("error"));
         },
     });
 }

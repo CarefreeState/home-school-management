@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macaron.homeschool.common.base.BasePageQuery;
 import com.macaron.homeschool.common.base.BasePageResult;
+import com.macaron.homeschool.common.constants.UserConstants;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.converter.SiteMessageConverter;
@@ -90,7 +91,18 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
         // 封装
         BasePageResult<SiteMessageVO> pageResult = BasePageResult.of(siteMessageVOIPage);
         // 转化
-        return SiteMessageConverter.INSTANCE.basePageResultToSiteMessageQueryVO(pageResult);
+        SiteMessageQueryVO siteMessageQueryVO = SiteMessageConverter.INSTANCE.basePageResultToSiteMessageQueryVO(pageResult);
+        siteMessageQueryVO.getList().forEach(message -> {
+            UserVO sender = message.getSender();
+            if(userId.equals(sender.getId())) {
+               sender.setNickname(UserConstants.MYSELF);
+           }
+            UserVO recipient = message.getRecipient();
+            if(userId.equals(recipient.getId())) {
+                recipient.setNickname(UserConstants.MYSELF);
+            }
+        });
+        return siteMessageQueryVO;
     }
 
     @Override

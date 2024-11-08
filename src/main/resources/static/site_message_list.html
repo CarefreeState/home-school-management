@@ -24,6 +24,7 @@
         <a href="./system_message_list.html">系统消息</a>
         <a href="./login.html">登录</a>
     </div>
+    <input id="userId" type="text" style="display: none">
 </div>
 
 <!-- 页面主体 -->
@@ -71,7 +72,6 @@
     <script src="./js/userType.js"></script>
     <script src="./js/request.js"></script>
     <script>
-
         jsonRequestWithToken("/api/v1/class/query/self", "GET", null, function (data) {
             for (var item of data) {
                 var option = '<option value="' + item.id + '">' + item.className + '</option>'

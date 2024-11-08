@@ -17,6 +17,7 @@
   font-size: 20px;
   text-indent: 15px;
   color: rgb(251, 114, 153);
+  background-color: rgba(255, 255, 255, 0.95);
 }
 #submit {
   height: 40px;

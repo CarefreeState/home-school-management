@@ -17,4 +17,6 @@ public interface UserConstants {
 
     Set<UserType> NO_AUDIT_REQUIRED_ROLES = Set.of(UserType.GUARDIAN);
 
+    String MYSELF = "我";
+
 }
