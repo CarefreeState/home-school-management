@@ -30,7 +30,7 @@
 <!-- 页面主体 -->
 <div class="container">
     <div class="container-left">
-        <div class="card" style="height: 350px">
+        <div class="card" style="height: 420px">
             <br />
             <div class="counter">
                 <span class="h">「班级」</span>
@@ -41,6 +41,7 @@
                 <span id="classAuditStatus" class="h"></span>
             </div>
             <a id="sendClass" href="#">发布班级通知</a>
+            <div id="updateClass" onclick="">修改班级信息</div>
             <div class="counter">
                 <span class="h">「创建者（
                     <span id="userType" class="h"></span>
@@ -84,6 +85,7 @@
         var classId = getParamValue("classId");
         jsonRequestWithToken("/api/v1/class/query/users/" + classId, "GET", null, function (data) {
             jQuery("#sendClass").attr("href", "./class_message_release.html?classId=" + data.id);
+            jQuery("#updateClass").attr("onclick", "update(" + data.id + ")");
             jQuery("#className").html(data.className);
             jQuery("#classAuditStatus").html(getAuditStatus(data.auditStatus));
             var creator = data.creator;
@@ -106,7 +108,7 @@
     queryClassUsers();
 
     function audit(userId) {
-        var status = confirm("是否审核通过") ? 1 : 2;
+        var status = confirm("是否确定审核通过？") ? 1 : 2;
         jsonRequestWithToken("/api/v1/class/audit/user", "PUT", {
             classId: getParamValue("classId"),
             userId: userId,
@@ -115,6 +117,23 @@
             jQuery(".article").empty();
             queryClassUsers();
         })
+    }
+
+    function update(classId) {
+        var className = prompt("请输入班级名称：", jQuery("#className").html());
+        if(className) {
+            jsonRequestWithToken("/api/v1/class/update/" + classId, "PUT", {
+                className: className
+            }, function () {
+                jQuery.toast({
+                    heading: "成功",
+                    text: "更新成功",
+                    icon: "success",
+                    allowToastClose: true,
+                });
+                jQuery("#className").html(className);
+            })
+        }
     }
 
 </script>

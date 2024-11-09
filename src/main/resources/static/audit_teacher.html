@@ -84,7 +84,7 @@
     queryTeachers();
 
     function audit(teacherId) {
-        var status = confirm("是否审核通过") ? 1 : 2;
+        var status = confirm("是否确定审核通过？") ? 1 : 2;
         jsonRequestWithToken("/api/v1/user/audit/user", "PUT", {
             userId: teacherId,
             auditStatus: status,

@@ -22,7 +22,7 @@ public interface SystemMessageService extends IService<SystemMessage> {
 
     void removeSystemMessage(Long messageId);
 
-    SystemMessageQueryVO querySystemMessageList(SystemMessageQueryDTO systemMessageQueryDTO);
+    SystemMessageQueryVO querySystemMessageList(Long userId, SystemMessageQueryDTO systemMessageQueryDTO);
 
     SystemMessage checkAndGetSystemMessage(Long messageId);
 

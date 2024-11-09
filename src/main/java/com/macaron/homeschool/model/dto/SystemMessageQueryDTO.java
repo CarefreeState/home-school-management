@@ -16,4 +16,6 @@ public class SystemMessageQueryDTO {
 
     private Integer pageSize;
 
+    private Boolean isFromMe;
+
 }

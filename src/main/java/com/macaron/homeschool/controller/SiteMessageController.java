@@ -46,7 +46,7 @@ public class SiteMessageController {
     private final SchoolClassService schoolClassService;
 
     @PostMapping("/release")
-    @Operation(summary = "发布站内信")
+    @Operation(summary = "发送站内信")
     public SystemJsonResponse<Long> releaseSiteMessage(@Valid @RequestBody SiteMessageDTO siteMessageDTO) {
         Long userId = BaseContext.getCurrentUser().getUserId();
         Long recipientId = siteMessageDTO.getRecipientId();
@@ -76,7 +76,7 @@ public class SiteMessageController {
     }
 
     @PostMapping("/query")
-    @Operation(summary = "查看站内信列表")
+    @Operation(summary = "条件分页查询站内信列表")
     public SystemJsonResponse<SiteMessageQueryVO> querySystemMessageList(@Valid @RequestBody(required = false) SiteMessageQueryDTO siteMessageQueryDTO) {
         Long userId = BaseContext.getCurrentUser().getUserId();
         SiteMessageQueryVO siteMessageQueryVO = siteMessageService.querySiteMessageList(userId, siteMessageQueryDTO);

@@ -82,6 +82,8 @@
     2. 离开按钮 */
   cursor: pointer;
 }
+
+
 /* 伪类选择器 ，选中的是元素的状态，
 hover就是获取鼠标悬停的状态*/
 .blog a:hover {

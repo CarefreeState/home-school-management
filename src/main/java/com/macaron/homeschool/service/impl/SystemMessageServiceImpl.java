@@ -61,7 +61,7 @@ public class SystemMessageServiceImpl extends ServiceImpl<SystemMessageMapper, S
     }
 
     @Override
-    public SystemMessageQueryVO querySystemMessageList(SystemMessageQueryDTO systemMessageQueryDTO) {
+    public SystemMessageQueryVO querySystemMessageList(Long userId, SystemMessageQueryDTO systemMessageQueryDTO) {
         // 解析分页参数获取 page
         IPage<SystemMessage> page = null;
         if(Objects.isNull(systemMessageQueryDTO)) {
@@ -70,7 +70,9 @@ public class SystemMessageServiceImpl extends ServiceImpl<SystemMessageMapper, S
             page = SystemMessageConverter.INSTANCE.systemMessageQueryDTOToBasePageQuery(systemMessageQueryDTO).toMpPage();
         }
         // 分页
-        IPage<SystemMessage> systemMessageIPage = this.lambdaQuery().page(page);
+        IPage<SystemMessage> systemMessageIPage = this.lambdaQuery()
+                .eq(Boolean.TRUE.equals(systemMessageQueryDTO.getIsFromMe()), SystemMessage::getCreatorId, userId)
+                .page(page);
         // 封装
         BasePageResult<SystemMessage> pageResult = BasePageResult.of(systemMessageIPage);
         // 转化

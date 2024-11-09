@@ -84,7 +84,7 @@
     queryClass();
 
     function audit(classId) {
-        var status = confirm("是否审核通过") ? 1 : 2;
+        var status = confirm("是否确定审核通过？") ? 1 : 2;
         jsonRequestWithToken("/api/v1/class/audit/class", "PUT", {
             classId: classId,
             auditStatus: status,

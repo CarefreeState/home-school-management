@@ -82,15 +82,17 @@
     })
 
     function attend(classId) {
-        jsonRequestWithToken("/api/v1/class/attend/" + classId, "PUT", null, function () {
-            jQuery.toast({
-                heading: "提醒",
-                text: "申请加入班级成功",
-                icon: "success",
-                allowToastClose: true,
+        if(confirm("是否加入班级？")) {
+            jsonRequestWithToken("/api/v1/class/attend/" + classId, "PUT", null, function () {
+                jQuery.toast({
+                    heading: "提醒",
+                    text: "申请加入班级成功",
+                    icon: "success",
+                    allowToastClose: true,
+                });
+                toClassDetail(classId);
             });
-            toClassDetail(classId);
-        })
+        }
     }
 
 </script>

@@ -91,7 +91,7 @@ public class SchoolClassController {
     @GetMapping("/query/self")
     @Operation(summary = "查询自己有关的班级列表")
     @Intercept(permit = {UserType.TEACHER, UserType.GUARDIAN})
-    public SystemJsonResponse<List<SchoolClassAboutMeVO>> querySelfSchoolClassSet() {
+    public SystemJsonResponse<List<SchoolClassAboutMeVO>> querySelfSchoolClassList() {
         Long userId = BaseContext.getCurrentUser().getUserId();
         List<SchoolClassAboutMeVO> schoolClassAboutMeVOList = schoolClassService.querySchoolClassAboutMeList(userId);
         return SystemJsonResponse.SYSTEM_SUCCESS(schoolClassAboutMeVOList);

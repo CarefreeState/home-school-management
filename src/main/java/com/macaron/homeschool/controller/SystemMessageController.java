@@ -58,10 +58,11 @@ public class SystemMessageController {
     }
 
     @PostMapping("/query")
-    @Operation(summary = "查看系统消息列表")
+    @Operation(summary = "条件分页查询系统消息列表")
     @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
     public SystemJsonResponse<SystemMessageQueryVO> querySystemMessageList(@Valid @RequestBody(required = false) SystemMessageQueryDTO systemMessageQueryDTO) {
-        SystemMessageQueryVO systemMessageQueryVO = systemMessageService.querySystemMessageList(systemMessageQueryDTO);
+        Long userId = BaseContext.getCurrentUser().getUserId();
+        SystemMessageQueryVO systemMessageQueryVO = systemMessageService.querySystemMessageList(userId, systemMessageQueryDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS(systemMessageQueryVO);
     }
 
