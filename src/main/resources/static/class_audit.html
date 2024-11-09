@@ -14,7 +14,7 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
-        <div id="title">审核班级</div>
+        <div id="title">审核班级（<span id="userNickname"></span>）</div>
     </div>
     <div class="space2" style="display: flex; justify-content: flex-end">
         <a href="./teacher_audit.html">审核老师</a>
@@ -64,18 +64,24 @@
     jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
         jQuery("#username").html(data.username);
         jQuery("#nickname").html(data.nickname);
+        jQuery("#userNickname").html(data.nickname);
         jQuery("#userType").html(getType(data.userType));
     });
-    jsonRequestWithToken("/api/v1/class/query/all", "GET", null, function (data) {
-        for (var item of data) {
-            var art = '<div class="blog"><div class="title">' + item.className + "</div>";
-            art += '<div class="date">' +  item.createTime + "（" + getAuditStatus(item.auditStatus) + "）" + "</div>";
-            art += '<div class="thing">';
-            art += '<span onclick="audit(' + item.id + ')">审核</span>';
-            art += "</div></div>";
-            jQuery(".article").append(jQuery(art));
-        }
-    })
+
+    function queryClass() {
+        jsonRequestWithToken("/api/v1/class/query/all", "GET", null, function (data) {
+            for (var item of data) {
+                var art = '<div class="blog"><div class="title">' + item.className + "</div>";
+                art += '<div class="date">' + '创建时间：' +  item.createTime + " 👉 " + getAuditStatus(item.auditStatus)+ "</div>";
+                art += '<div class="thing">';
+                art += '<span onclick="audit(' + item.id + ')">审核</span>';
+                art += "</div></div>";
+                jQuery(".article").append(jQuery(art));
+            }
+        })
+    }
+
+    queryClass();
 
     function audit(classId) {
         var status = confirm("是否审核通过") ? 1 : 2;
@@ -83,7 +89,8 @@
             classId: classId,
             auditStatus: status,
         }, function () {
-            refresh();
+            jQuery(".article").empty();
+            queryClass();
         })
     }
 

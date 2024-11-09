@@ -2,6 +2,8 @@ package com.macaron.homeschool.model.vo;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * Created With Intellij IDEA
  * Description:
@@ -23,5 +25,7 @@ public class UserVO {
     private Integer userType;
 
     private Integer auditStatus;
+
+    private LocalDateTime createTime;
 
 }

@@ -15,7 +15,7 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
-        <div id="title">班级详情</div>
+        <div id="title">班级详情（<span id="userNickname"></span>）</div>
     </div>
     <div class="space2" style="display: flex; justify-content: flex-end">
         <a href="./my_class_list.html">我的班级</a>
@@ -76,26 +76,34 @@
 
 <script>
 
-    var classId = getParamValue("classId");
-    jsonRequestWithToken("/api/v1/class/query/users/" + classId, "GET", null, function (data) {
-        jQuery("#sendClass").attr("href", "./class_message_release.html?classId=" + data.id);
-        jQuery("#className").html(data.className);
-        jQuery("#classAuditStatus").html(getAuditStatus(data.auditStatus));
-        var creator = data.creator;
-        jQuery("#username").html(creator.username);
-        jQuery("#nickname").html(creator.nickname);
-        jQuery("#userType").html(getType(creator.userType));
-        jQuery("#sendSite").attr("href", "./site_message_release.html?classId=" + classId + "&recipientId=" + creator.id);
-        for (var item of data.userList) {
-            var art = '<div class="blog"><div class="title">' + item.userVO.nickname + "（" + getType(item.userVO.userType) + "）</div>";
-            art += '<div class="date">' + getAuditStatus(item.auditStatus) + "</div>";
-            art += '<div class="thing">';
-            art += '<span onclick="audit(' + item.userVO.id + ')">审核</span>';
-            art += '<a href="./site_message_release.html?classId=' + classId + '&recipientId=' + item.userVO.id + '">发送站内信</a>';
-            art += "</div></div>";
-            jQuery(".article").append(jQuery(art));
-        }
-    })
+    jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
+        jQuery("#userNickname").html(data.nickname);
+    });
+
+    function queryClassUsers() {
+        var classId = getParamValue("classId");
+        jsonRequestWithToken("/api/v1/class/query/users/" + classId, "GET", null, function (data) {
+            jQuery("#sendClass").attr("href", "./class_message_release.html?classId=" + data.id);
+            jQuery("#className").html(data.className);
+            jQuery("#classAuditStatus").html(getAuditStatus(data.auditStatus));
+            var creator = data.creator;
+            jQuery("#username").html(creator.username);
+            jQuery("#nickname").html(creator.nickname);
+            jQuery("#userType").html(getType(creator.userType));
+            jQuery("#sendSite").attr("href", "./site_message_release.html?classId=" + classId + "&recipientId=" + creator.id);
+            for (var item of data.userList) {
+                var art = '<div class="blog"><div class="title">' + item.userVO.nickname + "（" + getType(item.userVO.userType) + "）</div>";
+                art += '<div class="date">' + '申请时间：' + item.createTime + ' 👉 ' + getAuditStatus(item.auditStatus) + "</div>";
+                art += '<div class="thing">';
+                art += '<span onclick="audit(' + item.userVO.id + ')">审核</span>';
+                art += '<a href="./site_message_release.html?classId=' + classId + '&recipientId=' + item.userVO.id + '">发送站内信</a>';
+                art += "</div></div>";
+                jQuery(".article").append(jQuery(art));
+            }
+        })
+    }
+
+    queryClassUsers();
 
     function audit(userId) {
         var status = confirm("是否审核通过") ? 1 : 2;
@@ -104,7 +112,8 @@
             userId: userId,
             auditStatus: status,
         }, function () {
-            refresh();
+            jQuery(".article").empty();
+            queryClassUsers();
         })
     }
 

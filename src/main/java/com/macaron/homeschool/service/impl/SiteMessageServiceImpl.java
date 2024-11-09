@@ -74,12 +74,14 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
         IPage<SiteMessageVO> page = null;
         Long classId = null;
         Long oppositeId = null;
+        Boolean isFromMe = null;
         if(Objects.isNull(siteMessageQueryDTO)) {
             page = new BasePageQuery().toMpPage();
         } else {
             page = SiteMessageConverter.INSTANCE.siteMessageQueryDTOToBasePageQuery(siteMessageQueryDTO).toMpPage();
             classId = siteMessageQueryDTO.getClassId();
             oppositeId = siteMessageQueryDTO.getOppositeId();
+            isFromMe = siteMessageQueryDTO.getIsFromMe();
         }
         // 如果 classId 不为 null，userId 必须是该班级的
         if(Objects.nonNull(classId)) {
@@ -87,7 +89,7 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
             schoolClassService.checkPartnerOfSchoolClass(classId, userId);
         }
         // 分页
-        IPage<SiteMessageVO> siteMessageVOIPage = siteMessageMapper.querySiteMessageList(page, userId, classId, oppositeId);
+        IPage<SiteMessageVO> siteMessageVOIPage = siteMessageMapper.querySiteMessageList(page, userId, classId, oppositeId, isFromMe);
         // 封装
         BasePageResult<SiteMessageVO> pageResult = BasePageResult.of(siteMessageVOIPage);
         // 转化

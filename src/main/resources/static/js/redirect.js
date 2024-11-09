@@ -93,7 +93,3 @@ function toClassDetail(classId) {
         location.href = "../class_detail.html?classId=" + classId;
     }, 3000);
 }
-
-function refresh() {
-    location.href = location.href;
-}

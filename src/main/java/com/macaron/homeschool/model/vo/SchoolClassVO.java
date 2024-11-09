@@ -20,6 +20,6 @@ public class SchoolClassVO {
 
     private Integer auditStatus;
 
-    protected LocalDateTime createTime;
+    private LocalDateTime createTime;
 
 }

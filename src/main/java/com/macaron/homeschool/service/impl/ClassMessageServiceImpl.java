@@ -71,8 +71,10 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
         schoolClassService.checkSchoolClassApproved(classId);
         schoolClassService.checkPartnerOfSchoolClass(classId, userId);
         // 分页
+
         IPage<ClassMessage> classMessageIPage = this.lambdaQuery()
                 .eq(Objects.nonNull(classId), ClassMessage::getClassId, classId)
+                .eq(Boolean.TRUE.equals(classMessageQueryDTO.getIsFromMe()), ClassMessage::getCreatorId, userId)
                 .page(page);
         // 封装
         BasePageResult<ClassMessage> pageResult = BasePageResult.of(classMessageIPage);

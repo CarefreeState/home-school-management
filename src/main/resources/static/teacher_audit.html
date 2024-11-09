@@ -14,7 +14,7 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
-        <div id="title">审核教师</div>
+        <div id="title">审核教师（<span id="userNickname"></span>）</div>
     </div>
     <div class="space2" style="display: flex; justify-content: flex-end">
         <a href="./class_audit.html">审核班级</a>
@@ -64,18 +64,24 @@
     jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
         jQuery("#username").html(data.username);
         jQuery("#nickname").html(data.nickname);
+        jQuery("#userNickname").html(data.nickname);
         jQuery("#userType").html(getType(data.userType));
     });
-    jsonRequestWithToken("/api/v1/user/list/teacher", "GET", null, function (data) {
-        for (var item of data) {
-            var art = '<div class="blog"><div class="title">' + item.nickname + "（" + getType(item.userType) + "）" + "</div>";
-            art += '<div class="date">' + getAuditStatus(item.auditStatus) + "</div>";
-            art += '<div class="thing">';
-            art += '<span onclick="audit(' + item.id + ')">审核</span>';
-            art += "</div></div>";
-            jQuery(".article").append(jQuery(art));
-        }
-    })
+
+    function queryTeachers() {
+        jsonRequestWithToken("/api/v1/user/list/teacher", "GET", null, function (data) {
+            for (var item of data) {
+                var art = '<div class="blog"><div class="title">' + item.nickname + "（" + getType(item.userType) + "）" + "</div>";
+                art += '<div class="date">' + "注册时间：" + item.createTime + " 👉 " + getAuditStatus(item.auditStatus) + "</div>";
+                art += '<div class="thing">';
+                art += '<span onclick="audit(' + item.id + ')">审核</span>';
+                art += "</div></div>";
+                jQuery(".article").append(jQuery(art));
+            }
+        })
+    }
+
+    queryTeachers();
 
     function audit(teacherId) {
         var status = confirm("是否审核通过") ? 1 : 2;
@@ -83,7 +89,8 @@
             userId: teacherId,
             auditStatus: status,
         }, function () {
-            refresh();
+            jQuery(".article").empty();
+            queryTeachers();
         })
     }
 

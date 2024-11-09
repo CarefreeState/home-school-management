@@ -22,6 +22,6 @@ public class SystemMessageDetailVO {
 
     private String content;
 
-    protected LocalDateTime createTime;
+    private LocalDateTime createTime;
 
 }

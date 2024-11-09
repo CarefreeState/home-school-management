@@ -20,6 +20,6 @@ public class SystemMessageVO {
 
     private String content;
 
-    protected LocalDateTime createTime;
+    private LocalDateTime createTime;
 
 }

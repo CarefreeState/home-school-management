@@ -14,7 +14,7 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
-        <div id="title">班级列表</div>
+        <div id="title">班级列表（<span id="userNickname"></span>）</div>
     </div>
     <div class="space2" style="display: flex; justify-content: flex-end">
         <a href="./my_class_list.html">我的班级</a>
@@ -66,6 +66,7 @@
     jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
         jQuery("#username").html(data.username);
         jQuery("#nickname").html(data.nickname);
+        jQuery("#userNickname").html(data.nickname);
         jQuery("#userType").html(getType(data.userType));
     });
     jsonRequestWithToken("/api/v1/class/query/normal", "GET", null, function (data) {

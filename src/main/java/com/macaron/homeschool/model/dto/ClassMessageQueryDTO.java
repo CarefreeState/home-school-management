@@ -20,4 +20,6 @@ public class ClassMessageQueryDTO {
     @NotNull(message = "班级 id 不能为空")
     private Long classId;
 
+    private Boolean isFromMe;
+
 }

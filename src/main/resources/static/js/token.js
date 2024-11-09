@@ -2,7 +2,9 @@
 function setToken(token) {
     if(token) {
         console.log("设置 token：" + token);
-        jQuery.cookie("token", token);
+        jQuery.cookie("token", token, {
+            expires: 365
+        });
     }
 }
 

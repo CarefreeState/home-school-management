@@ -15,7 +15,7 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
-        <div id="title">站内信</div>
+        <div id="title">站内信（<span id="userNickname"></span>）</div>
     </div>
     <div class="space2" style="display: flex; justify-content: flex-end">
         <a href="./my_class_list.html">我的班级</a>
@@ -45,6 +45,14 @@
                     <option value="">不选择</option>
                 </select>
             </div>
+            <div class="row">
+                <label for="isFromMe">👉</label>
+                <select id="isFromMe">
+                    <option value="">全部</option>
+                    <option value="true">我发送的</option>
+                    <option value="false">我收到的</option>
+                </select>
+            </div>
             <button class="blog-pagnation-item" onclick="tofirst()">首页</button>
             <button class="blog-pagnation-item" onclick="toPrev()">上一页</button>
             <button class="blog-pagnation-item" onclick="toNext()">下一页</button>
@@ -72,20 +80,29 @@
     <script src="./js/userType.js"></script>
     <script src="./js/request.js"></script>
     <script>
+        jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
+            jQuery("#userNickname").html(data.nickname);
+        });
+
         jsonRequestWithToken("/api/v1/class/query/self", "GET", null, function (data) {
             for (var item of data) {
                 var option = '<option value="' + item.id + '">' + item.className + '</option>'
                 jQuery("#class").append(jQuery(option));
             }
         })
-        jsonRequestWithToken("/api/v1/message/site/opposites", "POST", {
-            classId: jQuery("#class").val(),
-        }, function (data) {
-            for (var item of data) {
-                var option = '<option value="' + item.id + '">' + item.nickname + '</option>'
-                jQuery("#opposite").append(jQuery(option));
-            }
-        })
+
+        function queryOpposites() {
+            jQuery("#opposite").empty();
+            jQuery("#opposite").append('<option value="">不选择</option>');
+            jsonRequestWithToken("/api/v1/message/site/opposites", "POST", {
+                classId: jQuery("#class").val(),
+            }, function (data) {
+                for (var item of data) {
+                    var option = '<option value="' + item.id + '">' + item.nickname + '</option>'
+                    jQuery("#opposite").append(jQuery(option));
+                }
+            })
+        }
 
         function querySiteMessage() {
             jQuery(".article").empty();
@@ -95,6 +112,7 @@
                 {
                     classId: jQuery("#class").val(),
                     oppositeId: jQuery("#opposite").val(),
+                    isFromMe: jQuery("#isFromMe").val(),
                     current: jQuery("#current").val(),
                     pageSize: jQuery("#pageSize").val(),
                 },
@@ -108,7 +126,7 @@
                         var item = resultList[i];
                         var art = '<div class="blog">';
                         art += '<div class="thing">';
-                        art += '<div class="title">' + item.sender.nickname + "（" + getType(item.sender.userType) + "）👉 " +
+                        art += '<div class="title">' + item.sender.nickname + "（" + getType(item.sender.userType) + "） 👉 " +
                              item.recipient.nickname + "（" + getType(item.recipient.userType) + "）" + "</div></div>";
                         art += '<div class="date">' + item.createTime + "</div>";
                         art += '<div class="content">' + item.title + "</div>";
@@ -119,9 +137,15 @@
                 }
             );
         }
+        queryOpposites();
         querySiteMessage();
-        jQuery("#class").change(querySiteMessage);
+
+        jQuery("#class").change(function () {
+            queryOpposites();
+            querySiteMessage();
+        });
         jQuery("#opposite").change(querySiteMessage);
+        jQuery("#isFromMe").change(querySiteMessage);
         jQuery("#current").blur(querySiteMessage);
         jQuery("#pageSize").blur(querySiteMessage);
 

@@ -44,6 +44,14 @@
                     r.id = #{userId,jdbcType=BIGINT}
                 )
             )
+            <if test="isFromMe != null">
+                <if test="isFromMe == true">
+                    and s.id = #{userId,jdbcType=BIGINT}
+                </if>
+                <if test="isFromMe == false">
+                    and r.id = #{userId,jdbcType=BIGINT}
+                </if>
+            </if>
         </where>
         order by m.create_time asc
     </select>

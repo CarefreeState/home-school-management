@@ -24,6 +24,6 @@ public class SchoolClassAboutMeVO {
 
     private Integer attendAuditStatus;
 
-    protected LocalDateTime createTime;
+    private LocalDateTime createTime;
 
 }

@@ -20,4 +20,6 @@ public class SiteMessageQueryDTO {
 
     private Long oppositeId; // 消息的对方
 
+    private Boolean isFromMe; // 是否发送给我 null 代表全部， false 代表我收到的，true 代表我发送的
+
 }

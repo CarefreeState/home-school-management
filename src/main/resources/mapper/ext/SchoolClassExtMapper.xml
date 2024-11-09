@@ -7,6 +7,7 @@
     <resultMap id="SchoolClassUserMap" type="com.macaron.homeschool.model.vo.SchoolClassUserVO">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <association property="userVO" columnPrefix="u_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
     </resultMap>
     <resultMap id="SchoolClassDetailMap" type="com.macaron.homeschool.model.vo.SchoolClassDetailVO">
@@ -30,7 +31,7 @@
             c.id, c.class_name, c.audit_status,
             cr.id cr_id, cr.username cr_username, cr.nickname cr_nickname, cr.phone_number cr_phone_number,
             cr.user_type cr_user_type, cr.audit_status cr_audit_status,
-            cu.id cu_id, cu.audit_status cu_audit_status,
+            cu.id cu_id, cu.audit_status cu_audit_status, cu.create_time cu_create_time,
             u.id cu_u_id, u.username cu_u_username, u.nickname cu_u_nickname, u.phone_number cu_u_phone_number,
             u.user_type cu_u_user_type, u.audit_status cu_u_audit_status
         from school_class c
@@ -39,7 +40,7 @@
              left join user u on cu.user_id = u.id and cu.is_deleted = 0 and u.is_deleted = 0
         where
             c.is_deleted = 0 and c.id = #{classId,jdbcType=BIGINT}
-        order by cu_u_user_type asc
+        order by cu_u_user_type asc, cu_create_time asc
     </select>
 
     <select id="querySchoolClassAboutMeList" parameterType="java.lang.Long" resultMap="SchoolClassAboutMeMap">

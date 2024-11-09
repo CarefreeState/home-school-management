@@ -16,7 +16,7 @@ import java.util.List;
 */
 public interface SiteMessageMapper extends BaseMapper<SiteMessage> {
 
-    IPage<SiteMessageVO> querySiteMessageList(IPage<SiteMessageVO> page, @Param("userId") Long userId, @Param("classId") Long classId, @Param("oppositeId") Long oppositeId);
+    IPage<SiteMessageVO> querySiteMessageList(IPage<SiteMessageVO> page, @Param("userId") Long userId, @Param("classId") Long classId, @Param("oppositeId") Long oppositeId, @Param("isFromMe") Boolean isFromMe);
 
     List<SiteMessageVO> querySiteMessageListByUserId(@Param("userId") Long userId, @Param("classId") Long classId);
 }

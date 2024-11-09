@@ -15,7 +15,7 @@
 <div class="navigation">
     <div class="space1" style="display: flex; justify-content: flex-start">
         <img src="./img/logo.png"/>
-        <div id="title">班级消息</div>
+        <div id="title">班级消息（<span id="userNickname"></span>）</div>
     </div>
     <div class="space2" style="display: flex; justify-content: flex-end">
         <a href="./my_class_list.html">我的班级</a>
@@ -35,6 +35,13 @@
                 <label for="class">班级</label>
                 <select id="class">
                     <option style='display: none'></option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="isFromMe">👉</label>
+                <select id="isFromMe">
+                    <option value="false">全部</option>
+                    <option value="true">我发布的</option>
                 </select>
             </div>
             <button class="blog-pagnation-item" onclick="tofirst()">首页</button>
@@ -63,6 +70,10 @@
 <script src="./js/token.js"></script>
 <script src="./js/request.js"></script>
 <script>
+
+    jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
+        jQuery("#userNickname").html(data.nickname);
+    });
 
     function getMinhIndex(arr, val) {
         for (var i = 0; i < arr.length; i++) {
@@ -177,6 +188,7 @@
                 current: jQuery("#current").val(),
                 pageSize: jQuery("#pageSize").val(),
                 classId: classId.val(),
+                isFromMe: jQuery("#isFromMe").val(),
             },
             function (data) {
                 jQuery("#current").val(data.current);
@@ -195,6 +207,7 @@
     }
 
     jQuery("#class").change(queryClassMessage);
+    jQuery("#isFromMe").change(queryClassMessage);
     jQuery("#current").blur(queryClassMessage);
     jQuery("#pageSize").blur(queryClassMessage);
 
