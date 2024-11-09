@@ -58,13 +58,11 @@
 <script>
     jQuery("#username").focus();
     function login() {
-        var username = jQuery("#username");
-        var password = jQuery("#password");
         jsonRequest("/api/v1/user/login", "POST", {
             loginType: "password",
             passwordParams: {
-                username: username.val(),
-                password: password.val(),
+                username: jQuery("#username").val(),
+                password: jQuery("#password").val(),
             },
         }, function (data) {
             jQuery.toast({

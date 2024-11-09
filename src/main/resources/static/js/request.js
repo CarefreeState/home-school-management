@@ -1,10 +1,10 @@
 
-function log(heading, icon, text) {
-    if(text) {
+function toastHeader(heading, icon, header) {
+    if(header) {
         jQuery.toast({
             heading: heading,
-            text: decodeURIComponent(text),
             icon: icon,
+            text: decodeURIComponent(header),
             allowToastClose: true,
         });
     }
@@ -38,16 +38,16 @@ function jsonRequestWithToken(u, m, d, s) {
             //提示信息
             $.toast({
                 heading: "错误",
-                text: "访问出现问题 ",
+                text: "访问出现问题",
                 icon: "error",
                 allowToastClose: true,
             });
         },
         complete: function(xhr) {
             setToken(xhr.getResponseHeader("token"));
-            log("提示", "info", xhr.getResponseHeader("info"));
-            log("警告", "warning", xhr.getResponseHeader("warn"));
-            log("错误", "error", xhr.getResponseHeader("error"));
+            toastHeader("提示", "info", xhr.getResponseHeader("info"));
+            toastHeader("警告", "warning", xhr.getResponseHeader("warn"));
+            toastHeader("错误", "error", xhr.getResponseHeader("error"));
         },
     });
 }

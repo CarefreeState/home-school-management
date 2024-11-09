@@ -62,16 +62,13 @@
 <script src="./js/request.js"></script>
 
 <script>
+    jQuery("#username").focus();
     function register() {
-        var userType = jQuery("#userType");
-        var username = jQuery("#username");
-        var nickname = jQuery("#nickname");
-        var password = jQuery("#password");
         jsonRequest("/api/v1/user/register", "POST", {
-            userType: userType.val(),
-            username: username.val(),
-            nickname: nickname.val(),
-            password: password.val(),
+            userType: jQuery("#userType").val(),
+            username: jQuery("#username").val(),
+            nickname: jQuery("#nickname").val(),
+            password: jQuery("#password").val(),
         }, function () {
             jQuery.toast({
                 heading: "成功",

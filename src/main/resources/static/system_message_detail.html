@@ -70,8 +70,8 @@
     jsonRequestWithToken("/api/v1/user/info", "GET", null, function (data) {
         jQuery("#userNickname").html(data.nickname);
         if(data.userType === 1) {
-            jQuery(".space2").append('<a href="./teacher_audit.html">审核老师</a>');
-            jQuery(".space2").append('<a href="./class_audit.html">审核班级</a>');
+            jQuery(".space2").append('<a href="./audit_teacher.html">审核老师</a>');
+            jQuery(".space2").append('<a href="./audit_class.html">审核班级</a>');
         } else {
             jQuery(".space2").append('<a href="./my_class_list.html">我的班级</a>');
             jQuery(".space2").append('<a href="./class_list.html">班级列表</a>');
