@@ -48,7 +48,7 @@ body {
 }
 
 .navigation .space1 {
-  width: 40%;
+  width: 50%;
 }
 
 #title {
@@ -58,11 +58,10 @@ body {
   font-family: "Courier New", Courier, monospace;
   color: white;
   text-decoration: none;
-  padding: 0px 10px;
 }
 
 .navigation .space2 {
-  width: 60%;
+  width: 50%;
 }
 
 .container {
