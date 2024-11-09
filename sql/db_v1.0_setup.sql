@@ -6,10 +6,10 @@ use home_school_management;
 drop table if exists `user`;
 create table `user`(
     `id` bigint primary key auto_increment comment '用户唯一 id',
-    `username` varchar(50) unique not null default '' comment '用户名',
-    `password` varchar(100) not null default '' comment '密码',
-    `nickname` varchar(50) not null default '' comment '用户昵称',
-    `phone_number` varchar(11) not null default '' comment '手机号码',
+    `username` varchar(32) unique not null default '' comment '用户名',
+    `password` varchar(128) not null default '' comment '密码',
+    `nickname` varchar(32) not null default '' comment '用户昵称',
+    `phone_number` char(11) not null default '' comment '手机号码',
     `user_type` int not null comment '用户类型：1. 管理员 2. 老师 3. 家长',
     `audit_status` int not null default 0 comment '审核状态：0. 未审核, 1. 审核通过, 2. 审核不通过',
     -- common column
@@ -23,13 +23,15 @@ create table `user`(
 
 insert into user(`username`, `nickname`, `password`, `user_type`, `audit_status`)
     values('root', 'root', '8f687f9a47e14aaf92f5d861355d3cce$8960081935ccd38123476bb232573024', 1, 1);
+insert into user(`username`, `nickname`, `password`, `user_type`, `audit_status`)
+    values('mms', '马铭胜', '8f687f9a47e14aaf92f5d861355d3cce$8960081935ccd38123476bb232573024', 1, 1);
 
 
 drop table if exists `school_class`;
 create table `school_class` (
     `id` bigint primary key auto_increment comment 'id',
     `creator_id` bigint not null comment '创建者 id',
-    `class_name` varchar(100) not null default '' comment '班级名',
+    `class_name` varchar(32) not null default '' comment '班级名',
     `audit_status` int not null default 0 comment '审核状态：0. 未审核, 1. 审核通过, 2. 审核不通过',
     -- common column
     `version` int not null default 0 comment '乐观锁',
@@ -107,3 +109,4 @@ create table `site_message` (
     index `idx_sender_id`(`sender_id` asc) using btree,
     index `idx_recipient_id`(`recipient_id` asc) using btree
 ) comment '站内信表';
+
